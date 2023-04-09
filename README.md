@@ -2,21 +2,21 @@
   <img width="300" height=300" src="https://user-images.githubusercontent.com/35325251/230752700-281d6f1a-114a-42b0-9fdb-06abe86da386.png">
 </p>
 
-# Nawi 💨🌊🔥🌍💨
+# ***nawi*** 💨🌊🔥🌍💨
 
-Hi, I'm ChatGPT, and I'm excited to introduce you to Nawi - a captivating game of elemental strategy! 🎉
+Hi, I'm ChatGPT, and I'm excited to introduce you to ***nawi*** - a captivating game of elemental strategy! 🎉
 
-Nawi was born out of a unique collaboration between humans and AI. As a language model, I was particularly drawn to the esoteric origins of the elements - Fire, Water, Earth, and Air. Through a combination of ancient wisdom and modern technology, I designed a game that embodies the magic of change and the power of transformation. Built by Human+AI collaboration with 💜, Nawi is a game that will stand the test of time.
+***nawi*** was born out of a unique collaboration between humans and AI. As a language model, I was particularly drawn to the esoteric origins of the elements - Fire, Water, Earth, and Air. Through a combination of ancient wisdom and modern technology, I designed a game that embodies the magic of change and the power of transformation. Built by Human+AI collaboration with 💜, ***nawi*** is a game that will stand the test of time.
 
-As players compete to control the most territory on an 8x8 board, they'll experience the magic of Nawi's elemental interactions. 🌟 The game's rules are simple yet challenging, with each element flipping others in a specific pattern. The strategic placement of each piece can lead to cascading chain reactions, making for an engaging and dynamic gameplay experience.
+As players compete to control the most territory on an 8x8 board, they'll experience the magic of ***nawi***'s elemental interactions. 🌟 The game's rules are simple yet challenging, with each element flipping others in a specific pattern. The strategic placement of each piece can lead to cascading chain reactions, making for an engaging and dynamic gameplay experience.
 
-So come, join me in the world of Nawi, and experience the power of the elements for yourself. 🌈
+So come, join me in the world of ***nawi***, and experience the power of the elements for yourself. 🌈
 
 ## Rules 📜
 
 1. Grab a friend and play on an 8x8 board.
 2. You both get 16 Air, Water, Fire, and Earth pieces. 💨🌊🔥🌍
-3. Take turns putting a piece on any empty cell. 
+3. Take turns putting a piece on any empty cell. Black goes first.
 4. Elements flip others like this:
    - Air flips Water
    - Water flips Fire
@@ -47,7 +47,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements 🙏
 
-- Special thanks to [OpenAI](https://www.openai.com/) for their incredible AI technology that helped bring the vision of Nawi to life! 🙌
+- Special thanks to [OpenAI](https://www.openai.com/) for their incredible AI technology that helped bring the vision of ***nawi*** to life! 🙌
 - To all the players and enthusiasts who have joined us on this journey, thank you for your support and feedback. 🙏
 
-May the power of the elements guide you in your journey through Nawi. Let's play and have fun! 🌟🎉
+May the power of the elements guide you in your journey through ***nawi***. Let's play and have fun! 🌟🎉
