@@ -33,3 +33,7 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+Route::get('/game', function () {
+    return Inertia::render('Game/Board');
+})->name('game');
