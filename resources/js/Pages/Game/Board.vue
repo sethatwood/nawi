@@ -262,20 +262,33 @@ export default {
                         const neighborElement = ELEMENTS[neighborCell.element];
                         if (
                             currentPlayerElement.beats.includes(
-                                neighborCell.element
+                                neighborElement.element
                             )
                         ) {
-                            state.gameState.board[neighborIndex] = null;
-                            gameBoard.value.children[
-                                neighborIndex
-                            ].style.backgroundColor = "transparent";
-                            state.gameState.score[
-                                state.gameState.currentPlayer
-                            ]++;
+                            state.gameState.board[neighborIndex] = {
+                                player: state.gameState.currentPlayer,
+                                element: state.gameState.selectedElement,
+                            };
+                            const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
+                            const img = document.createElement("img");
+                            img.src = svgPath;
+                            gameBoard.value.children[neighborIndex].innerHTML =
+                                "";
+                            gameBoard.value.children[neighborIndex].appendChild(
+                                img
+                            );
                         }
                     }
                 }
             });
+
+            // Update the score based on the number of pieces on the board
+            state.gameState.score.black = state.gameState.board.filter(
+                (cell) => cell && cell.player === "black"
+            ).length;
+            state.gameState.score.white = state.gameState.board.filter(
+                (cell) => cell && cell.player === "white"
+            ).length;
         }
 
         onMounted(async () => {
