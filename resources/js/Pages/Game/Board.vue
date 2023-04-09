@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="gameState">
         <div id="header">
             <div class="text-center mb-4">
                 <div
@@ -18,7 +18,7 @@
                         @click="changeElement('water')"
                         data-element="water"
                     >
-                        💧 Water</button
+                        🌊 Water</button
                     ><span>></span>
                     <button
                         class="element-btn selected"
@@ -44,23 +44,28 @@
                 </div>
             </div>
             <div id="turn-indicator" class="text-center mb-4">
-                Current player:
+                {{ currentPlayerEmoji }} Current player:
+                {{ gameState.currentPlayer }}
             </div>
             <div
                 id="score-board"
                 class="flex justify-center space-x-4 text-center mb-4"
             >
-                <div id="black-score">Black: 0</div>
+                <div id="black-score">
+                    ⚫️ Black: {{ gameState.score.black }}
+                </div>
                 <button id="random-game-btn" class="cursor-pointer">|</button>
-                <div id="white-score">White: 0</div>
+                <div id="white-score">
+                    ⚪️ White: {{ gameState.score.white }}
+                </div>
             </div>
         </div>
-        <div id="game-board" class="my-4" ref="gameBoard"></div>
+        <div id="board-container" class="my-4" ref="gameBoard"></div>
     </div>
 </template>
 
 <script>
-import { ref, onMounted, reactive, toRefs } from "vue";
+import { ref, nextTick, onMounted, reactive, toRefs, computed } from "vue";
 
 export default {
     setup() {
@@ -80,44 +85,59 @@ export default {
         };
 
         const gameBoard = ref(null);
-        const gameState = ref(null);
         const selectedElement = ref("fire");
         const state = reactive({
             gameState: null,
             selectedElement: "fire",
         });
+        const currentPlayerEmoji = computed(() => {
+            return state.gameState.currentPlayer === "black" ? "⚫️" : "⚪️";
+        });
 
         function updateTurnIndicator() {
-            gameState.value.turnIndicatorText = `${gameState.value.currentPlayer}'s turn (${gameState.value.selectedElement})`;
+            state.gameState.turnIndicatorText = `${state.gameState.currentPlayer}'s turn (${state.gameState.selectedElement})`;
         }
 
-        function createBoard() {
-            const boardSize = Math.min(
-                gameBoard.value.clientWidth,
-                gameBoard.value.clientHeight
-            );
-            gameBoard.value.style.width = `${boardSize}px`;
-            gameBoard.value.style.height = `${boardSize}px`;
-            gameBoard.value.style.margin = "0 auto";
-            gameBoard.value.style.display = "grid";
-            gameBoard.value.style.gridTemplateColumns = "repeat(8, 1fr)";
-            gameBoard.value.style.gridTemplateRows = "repeat(8, 1fr)";
-            gameBoard.value.style.gridGap = "1px";
+        async function createBoard() {
+            await nextTick();
+            const container = document.getElementById("board-container");
+            gameBoard.value = container;
+
+            if (container) {
+                const boardSize = Math.min(
+                    gameBoard.value.clientWidth,
+                    gameBoard.value.clientHeight
+                );
+                gameBoard.value.style.width = `${boardSize}px`;
+                gameBoard.value.style.height = `${boardSize}px`;
+                gameBoard.value.style.margin = "0 auto";
+                gameBoard.value.style.display = "grid";
+                gameBoard.value.style.gridTemplateColumns = "repeat(8, 1fr)";
+                gameBoard.value.style.gridTemplateRows = "repeat(8, 1fr)";
+                gameBoard.value.style.gridGap = "1px";
+            } else {
+                console.error('Element with id "board-container" not found');
+            }
         }
 
-        function createCells() {
-            const cellSize = Math.floor(gameBoard.value.clientWidth / 8) - 1;
+        async function createCells() {
+            await nextTick();
+            if (!gameBoard.value) {
+                console.error("gameBoard.value is null");
+                return;
+            }
+            // const cellSize = Math.floor(gameBoard.value.clientWidth / 8);
 
             for (let i = 0; i < 64; i++) {
                 const cell = document.createElement("div");
                 cell.classList.add(
-                    "bg-slate-500",
+                    "bg-slate-200",
                     "rounded-full",
                     "relative",
                     "cursor-pointer"
                 );
-                cell.style.width = `${cellSize}px`;
-                cell.style.height = `${cellSize}px`;
+                // cell.style.width = `${cellSize}px`;
+                // cell.style.height = `${cellSize}px`;
                 cell.style.aspectRatio = "1 / 1";
                 cell.dataset.index = i;
                 cell.addEventListener("click", handleCellClick);
@@ -158,14 +178,14 @@ export default {
 
             const cellSize = Math.floor(boardSize / 9) - 1;
             const cells = gameBoard.value.querySelectorAll("div[data-index]");
-            cells.forEach((cell) => {
-                cell.style.width = `${cellSize}px`;
-                cell.style.height = `${cellSize}px`;
-            });
+            // cells.forEach((cell) => {
+            //     cell.style.width = `${cellSize}px`;
+            //     cell.style.height = `${cellSize}px`;
+            // });
         }
 
         function initGameState() {
-            gameState.value = {
+            state.gameState = {
                 currentPlayer: "black",
                 board: new Array(64).fill(null),
                 selectedElement: "fire",
@@ -175,7 +195,6 @@ export default {
                 },
                 turnIndicatorText: "black's turn (fire)",
             };
-            updateTurnIndicator();
         }
 
         function changeElement(element) {
@@ -197,19 +216,19 @@ export default {
 
         function handleCellClick(event) {
             const index = parseInt(event.target.dataset.index);
-            if (gameState.value.board[index] === null) {
-                gameState.value.board[index] = {
-                    player: gameState.value.currentPlayer,
-                    element: gameState.value.selectedElement,
+            if (state.gameState.board[index] === null) {
+                state.gameState.board[index] = {
+                    player: state.gameState.currentPlayer,
+                    element: state.gameState.selectedElement,
                 };
                 // Use the selectedElement in the SVG path
-                const svgPath = `/images/${gameState.value.currentPlayer}-${state.selectedElement}.svg`;
+                const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
                 const img = document.createElement("img");
                 img.src = svgPath;
                 event.target.appendChild(img);
                 checkForCaptures(index);
-                gameState.value.currentPlayer =
-                    gameState.value.currentPlayer === "black"
+                state.gameState.currentPlayer =
+                    state.gameState.currentPlayer === "black"
                         ? "white"
                         : "black";
                 updateTurnIndicator();
@@ -218,7 +237,7 @@ export default {
 
         function checkForCaptures(index) {
             const opponent =
-                gameState.value.currentPlayer === "black" ? "white" : "black";
+                state.gameState.currentPlayer === "black" ? "white" : "black";
             const neighbors = [
                 { x: 1, y: 0 },
                 { x: -1, y: 0 },
@@ -227,7 +246,7 @@ export default {
             ];
 
             const currentPlayerElement =
-                ELEMENTS[gameState.value.selectedElement];
+                ELEMENTS[state.gameState.selectedElement];
             const x = index % 8;
             const y = Math.floor(index / 8);
 
@@ -237,7 +256,7 @@ export default {
 
                 if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
                     const neighborIndex = newY * 8 + newX;
-                    const neighborCell = gameState.value.board[neighborIndex];
+                    const neighborCell = state.gameState.board[neighborIndex];
 
                     if (neighborCell && neighborCell.player === opponent) {
                         const neighborElement = ELEMENTS[neighborCell.element];
@@ -246,12 +265,12 @@ export default {
                                 neighborCell.element
                             )
                         ) {
-                            gameState.value.board[neighborIndex] = null;
+                            state.gameState.board[neighborIndex] = null;
                             gameBoard.value.children[
                                 neighborIndex
                             ].style.backgroundColor = "transparent";
-                            gameState.value.score[
-                                gameState.value.currentPlayer
+                            state.gameState.score[
+                                state.gameState.currentPlayer
                             ]++;
                         }
                     }
@@ -259,19 +278,23 @@ export default {
             });
         }
 
-        onMounted(() => {
-            initGameState();
-            createBoard();
-            createCells();
-            resizeBoard();
-            window.addEventListener("resize", resizeBoard);
+        onMounted(async () => {
+            try {
+                initGameState();
+                await createBoard();
+                await createCells();
+                resizeBoard();
+                window.addEventListener("resize", resizeBoard);
+            } catch (error) {
+                console.error("Error in mounted hook:", error);
+            }
         });
 
         return {
-            ...toRefs(state),
             gameBoard,
-            gameState: state.gameState,
+            ...toRefs(state),
             changeElement,
+            currentPlayerEmoji,
         };
     },
 };
