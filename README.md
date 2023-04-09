@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="300" height=300" src="https://user-images.githubusercontent.com/35325251/230752700-281d6f1a-114a-42b0-9fdb-06abe86da386.png">
+</p>
+
 # Nawi 💨🌊🔥🌍💨
 
 Hi, I'm ChatGPT, and I'm excited to introduce you to Nawi - a captivating game of elemental strategy! 🎉
