@@ -2,16 +2,54 @@
     <div>
         <div id="header">
             <div class="text-center mb-4">
-                <div id="element-selector" class="flex justify-center space-x-4">
-                    <button class="element-btn" data-element="air">💨 Air</button><span>></span>
-                    <button class="element-btn" data-element="water">💧 Water</button><span>></span>
-                    <button class="element-btn" data-element="fire">🔥 Fire</button><span>></span>
-                    <button class="element-btn" data-element="earth">🌍 Earth</button><span>></span>
-                    <button class="element-btn" data-element="air">💨 Air</button>
+                <div
+                    id="element-selector"
+                    class="flex justify-center items-center space-x-4 mt-3"
+                >
+                    <button
+                        class="element-btn"
+                        @click="changeElement('air')"
+                        data-element="air"
+                    >
+                        💨 Air</button
+                    ><span>></span>
+                    <button
+                        class="element-btn"
+                        @click="changeElement('water')"
+                        data-element="water"
+                    >
+                        💧 Water</button
+                    ><span>></span>
+                    <button
+                        class="element-btn selected"
+                        @click="changeElement('fire')"
+                        data-element="fire"
+                    >
+                        🔥 Fire
+                    </button>
+                    <button
+                        class="element-btn"
+                        @click="changeElement('earth')"
+                        data-element="earth"
+                    >
+                        🌍 Earth</button
+                    ><span>></span>
+                    <button
+                        class="element-btn"
+                        @click="changeElement('air')"
+                        data-element="air"
+                    >
+                        💨 Air
+                    </button>
                 </div>
             </div>
-            <div id="turn-indicator" class="text-center mb-4">Current player: </div>
-            <div id="score-board" class="flex justify-center space-x-4 text-center mb-4">
+            <div id="turn-indicator" class="text-center mb-4">
+                Current player:
+            </div>
+            <div
+                id="score-board"
+                class="flex justify-center space-x-4 text-center mb-4"
+            >
                 <div id="black-score">Black: 0</div>
                 <button id="random-game-btn" class="cursor-pointer">|</button>
                 <div id="white-score">White: 0</div>
@@ -22,7 +60,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive, toRefs } from "vue";
 
 export default {
     setup() {
@@ -44,6 +82,10 @@ export default {
         const gameBoard = ref(null);
         const gameState = ref(null);
         const selectedElement = ref("fire");
+        const state = reactive({
+            gameState: null,
+            selectedElement: "fire",
+        });
 
         function updateTurnIndicator() {
             gameState.value.turnIndicatorText = `${gameState.value.currentPlayer}'s turn (${gameState.value.selectedElement})`;
@@ -56,6 +98,7 @@ export default {
             );
             gameBoard.value.style.width = `${boardSize}px`;
             gameBoard.value.style.height = `${boardSize}px`;
+            gameBoard.value.style.margin = "0 auto";
             gameBoard.value.style.display = "grid";
             gameBoard.value.style.gridTemplateColumns = "repeat(8, 1fr)";
             gameBoard.value.style.gridTemplateRows = "repeat(8, 1fr)";
@@ -135,10 +178,21 @@ export default {
             updateTurnIndicator();
         }
 
-        function changeElement() {
-            const newElement =
-                document.getElementById("element-selector").value;
-            gameState.value.selectedElement = newElement;
+        function changeElement(element) {
+            // Remove the 'selected' class from all buttons
+            document.querySelectorAll(".element-btn").forEach((btn) => {
+                btn.classList.remove("selected");
+            });
+
+            // Add the 'selected' class to the active element buttons
+            document
+                .querySelectorAll(`[data-element="${element}"]`)
+                .forEach((btn) => {
+                    btn.classList.add("selected");
+                });
+
+            // Update the selectedElement state
+            state.selectedElement = element;
         }
 
         function handleCellClick(event) {
@@ -148,7 +202,8 @@ export default {
                     player: gameState.value.currentPlayer,
                     element: gameState.value.selectedElement,
                 };
-                const svgPath = `/images/${gameState.value.currentPlayer}-${gameState.value.selectedElement}.svg`;
+                // Use the selectedElement in the SVG path
+                const svgPath = `/images/${gameState.value.currentPlayer}-${state.selectedElement}.svg`;
                 const img = document.createElement("img");
                 img.src = svgPath;
                 event.target.appendChild(img);
@@ -213,9 +268,9 @@ export default {
         });
 
         return {
+            ...toRefs(state),
             gameBoard,
-            gameState,
-            selectedElement,
+            gameState: state.gameState,
             changeElement,
         };
     },
@@ -223,5 +278,10 @@ export default {
 </script>
 
 <style scoped>
-/* Add your CSS styles */
+:deep(.selected) {
+    background-color: rgba(83, 253, 234, 0.512);
+    border: 1px solid rgb(43, 210, 191);
+    border-radius: 8px;
+    padding: 2px 4px;
+}
 </style>
