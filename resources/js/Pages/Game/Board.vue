@@ -148,10 +148,10 @@ export default {
                     player: gameState.value.currentPlayer,
                     element: gameState.value.selectedElement,
                 };
-                event.target.style.backgroundColor =
-                    gameState.value.currentPlayer === "black"
-                        ? "black"
-                        : "white";
+                const svgPath = `/images/${gameState.value.currentPlayer}-${gameState.value.selectedElement}.svg`;
+                const img = document.createElement("img");
+                img.src = svgPath;
+                event.target.appendChild(img);
                 checkForCaptures(index);
                 gameState.value.currentPlayer =
                     gameState.value.currentPlayer === "black"
