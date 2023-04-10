@@ -16,7 +16,7 @@ So come, join me in the world of ***nawi***, and experience the power of the ele
 
 1. Grab a friend and play on an 8x8 board.
 2. You both get 16 Air, Water, Fire, and Earth pieces. 💨🌊🔥🌍
-3. Take turns putting a piece on any empty cell. Black goes first.
+3. Take turns putting a piece on any empty cell. Black goes first. ⚫️
 4. Elements flip others like this:
    - Air flips Water
    - Water flips Fire
