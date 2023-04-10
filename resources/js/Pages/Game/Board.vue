@@ -87,6 +87,7 @@ export default {
                 beats: ["water"],
             },
         };
+        const ANIMATION_DURATION = 1000;
 
         const gameBoard = ref(null);
         const selectedElement = ref("fire");
@@ -283,21 +284,30 @@ export default {
             }
         }
 
-        function flipStone(cell, img) {
+        async function flipStone(cell, img) {
             return new Promise((resolve) => {
                 const oldImg = cell.querySelector("img");
-                oldImg.style.transition = "opacity 1s";
-                img.style.transition = "opacity 1s";
-                oldImg.style.opacity = 0;
-                img.style.opacity = 0;
+
+                // Set the position of the images within their cells.
+                oldImg.style.position = "absolute";
+                img.style.position = "absolute";
+                img.style.left = "0";
+                img.style.top = "0";
+
+                // Add z-index to the new image so it appears on top of the old image.
+                img.style.zIndex = "2";
+
+                oldImg.classList.add("fade-out");
+                img.classList.add("fade-in");
+
                 cell.appendChild(img);
-                setTimeout(() => {
-                    img.style.opacity = 1;
-                }, 100);
+
                 setTimeout(() => {
                     cell.removeChild(oldImg);
+                    img.classList.remove("fade-in");
+                    img.style.zIndex = "1"; // Reset z-index after the animation
                     resolve();
-                }, 1100);
+                }, ANIMATION_DURATION);
             });
         }
 
@@ -420,5 +430,35 @@ export default {
 }
 :deep(.game-board img) {
     transition: opacity 1s;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        z-index: 2;
+    }
+    100% {
+        opacity: 1;
+        z-index: 1;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        z-index: 1;
+    }
+    100% {
+        opacity: 0;
+        z-index: 0;
+    }
+}
+
+:deep(.fade-in) {
+    animation: fade-in 1s forwards;
+}
+
+:deep(.fade-out) {
+    animation: fade-out 1s forwards;
 }
 </style>
