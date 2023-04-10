@@ -88,10 +88,10 @@ export default {
             },
         };
         const ANIMATION_DURATION = 1000;
-        const DIRECTIONS = [-8, -1, 1, 8];
+        const ADJACENT_OFFSETS = [-1, 1, -9, 9, -8, 8, -7, 7];
+        const FLIP_DELAY = 500;
 
         const gameBoard = ref(null);
-        const selectedElement = ref("fire");
         const state = reactive({
             gameState: null,
             selectedElement: "fire",
@@ -99,6 +99,10 @@ export default {
         const currentPlayerEmoji = computed(() => {
             return state.gameState.currentPlayer === "black" ? "⚫️" : "⚪️";
         });
+
+        function isInBounds(index) {
+            return index >= 0 && index < 64;
+        }
 
         function updateTurnIndicator() {
             state.gameState.turnIndicatorText = `${state.gameState.currentPlayer}'s turn (${state.gameState.selectedElement})`;
@@ -222,67 +226,67 @@ export default {
             state.selectedElement = element;
         }
 
-        function createImg(element, player) {
-            const img = document.createElement("img");
-            img.src = `/images/${player}-${element}.svg`;
-            img.classList.add("transition-opacity");
-            return img;
+        function doesElementBeat(attacker, defender) {
+            console.log("doesElementBeat", attacker, defender);
+
+            const attackingElement = ELEMENTS[attacker];
+            const defendingElement = ELEMENTS[defender];
+
+            if (attackingElement && defendingElement) {
+                return attackingElement.beats.includes(
+                    defendingElement.element
+                );
+            } else {
+                return false;
+            }
         }
 
-        function canElementFlip(element, targetElement) {
-            const hierarchy = {
-                air: "water",
-                water: "fire",
-                fire: "earth",
-                earth: "air",
-            };
+        async function applyCaptures(captures) {
+            for (const index of captures) {
+                const cell = state.gameState.board[index];
+                const opponent = cell.player === "black" ? "white" : "black";
+                const currentPlayerStones = state.gameState.board.filter(
+                    (stone) =>
+                        stone && stone.player === state.gameState.currentPlayer
+                );
+                const currentElementCount = currentPlayerStones.filter(
+                    (stone) => stone.element === state.selectedElement
+                ).length;
 
-            return hierarchy[element] === targetElement;
-        }
+                if (currentElementCount < 16) {
+                    state.gameState.board[index] = {
+                        player: opponent,
+                        element: state.selectedElement,
+                    };
 
-        async function cascadeCaptures(index, element, initial = false) {
-            console.log("cascadeCaptures", index, element);
-
-            const visited = new Set();
-            const queue = [index];
-
-            const capturingCell = state.gameState.board[index];
-            const capturingPlayer = capturingCell.player;
-            const capturingElement = capturingCell.element;
-
-            while (queue.length > 0) {
-                const currentIndex = queue.shift();
-
-                if (visited.has(currentIndex)) {
-                    continue;
-                }
-                visited.add(currentIndex);
-
-                const flippedIndices = checkForCaptures(currentIndex, initial);
-
-                for (const flippedIndex of flippedIndices) {
-                    const flippedCell = state.gameState.board[flippedIndex];
-                    await flipPiece(
-                        flippedIndex,
-                        capturingPlayer,
-                        capturingElement
+                    const cellDiv = gameBoard.value.querySelector(
+                        `div[data-index="${index}"]`
                     );
-                    queue.push(flippedIndex);
+                    const svgPath = `/images/${opponent}-${state.selectedElement}.svg`;
+                    const img = document.createElement("img");
+                    img.src = svgPath;
+                    await flipStone(cellDiv, img);
                 }
             }
+        }
 
-            if (initial) {
-                state.gameState.currentPlayer =
-                    state.gameState.currentPlayer === "black"
-                        ? "white"
-                        : "black";
-                updateTurnIndicator();
-                updateScore(); // Add this line to update the score
+        async function cascadeCaptures(index, element) {
+            if (
+                state.gameState.currentPlayer ===
+                state.gameState.board[index].player
+            ) {
+                const captures = checkForCaptures(index, element);
+                if (captures.length > 0) {
+                    await sleep(FLIP_DELAY);
+                    applyCaptures(captures);
+                    await cascadeCaptures(index, element);
+                }
             }
         }
 
         async function handleCellClick(event) {
             const index = parseInt(event.target.dataset.index);
+
             if (state.gameState.board[index] === null) {
                 state.gameState.board[index] = {
                     player: state.gameState.currentPlayer,
@@ -292,8 +296,12 @@ export default {
                 const img = document.createElement("img");
                 img.src = svgPath;
                 event.target.appendChild(img);
+
+                // Call cascadeCaptures after placing the stone
+                await cascadeCaptures(index, state.selectedElement);
             }
-            await cascadeCaptures(index, state.selectedElement, true);
+
+            nextTurn(); // Add this line
         }
 
         async function flipStone(cell, img) {
@@ -329,106 +337,36 @@ export default {
             updateTurnIndicator();
         }
 
-        function isValidCoordinate(row, col) {
-            return row >= 0 && row < 8 && col >= 0 && col < 8;
-        }
+        function checkForCaptures(index, element) {
+            const opponent =
+                state.gameState.currentPlayer === "black" ? "white" : "black";
+            const captures = [];
+            const currentCell = state.gameState.board[index];
 
-        function checkForCaptures(index, initial = false) {
-            const row = Math.floor(index / 8);
-            const col = index % 8;
+            if (currentCell.player === opponent) {
+                return captures;
+            }
 
-            const capturingElement = state.gameState.board[index].element;
-            const capturingPlayer = state.gameState.board[index].player;
+            // Check all adjacent cells
+            for (const offset of ADJACENT_OFFSETS) {
+                const newIndex = index + offset;
 
-            const indicesToCapture = [];
+                if (isInBounds(newIndex)) {
+                    const adjacentCell = state.gameState.board[newIndex];
 
-            for (const direction of DIRECTIONS) {
-                const newRow = row + Math.floor(direction / 8);
-                const newCol = col + (direction % 8);
-
-                if (isValidCoordinate(newRow, newCol)) {
-                    const newIndex = newRow * 8 + newCol;
-                    const targetCell = state.gameState.board[newIndex];
-
-                    if (
-                        targetCell &&
-                        targetCell.player !== capturingPlayer &&
-                        canElementFlip(capturingElement, targetCell.element)
-                    ) {
-                        indicesToCapture.push(newIndex);
+                    if (adjacentCell && adjacentCell.player === opponent) {
+                        if (doesElementBeat(element, adjacentCell.element)) {
+                            captures.push(newIndex);
+                        }
                     }
                 }
             }
 
-            return indicesToCapture;
+            return captures;
         }
 
-        function getAdjacentIndices(index) {
-            const x = index % 8;
-            const y = Math.floor(index / 8);
-            const neighbors = [
-                { x: 1, y: 0 },
-                { x: -1, y: 0 },
-                { x: 0, y: 1 },
-                { x: 0, y: -1 },
-            ];
-
-            return neighbors
-                .map((neighbor) => {
-                    const newX = x + neighbor.x;
-                    const newY = y + neighbor.y;
-
-                    if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
-                        return newY * 8 + newX;
-                    }
-
-                    return null;
-                })
-                .filter((index) => index !== null);
-        }
-
-        async function flipPiece(index, newPlayer, newElement) {
-            state.gameState.board[index] = {
-                player: newPlayer,
-                element: newElement,
-            };
-
-            const svgPath = `/images/${newPlayer}-${newElement}.svg`;
-            const img = document.createElement("img");
-            img.src = svgPath;
-            await nextTick(); // Add this line to wait for DOM updates
-            await flipStone(gameBoard.value.children[index], img);
-        }
-
-        function updateScore() {
-            console.log("updateScore start");
-            logGameState();
-            state.gameState.score.black = state.gameState.board.filter(
-                (cell) => cell && cell.player === "black"
-            ).length;
-            state.gameState.score.white = state.gameState.board.filter(
-                (cell) => cell && cell.player === "white"
-            ).length;
-            console.log("updateScore end");
-            logGameState();
-        }
-
-        function getPiece(cell) {
-            const img = cell.querySelector("img");
-            if (!img) return null;
-
-            const [player, element] = img.src
-                .match(/[^/]*$/)[0]
-                .split("-")[0]
-                .split(".");
-            return {
-                player,
-                element,
-            };
-        }
-
-        function isValidIndex(index) {
-            return index >= 0 && index < 64;
+        function sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
         }
 
         function logGameState() {
@@ -451,21 +389,6 @@ export default {
                 );
             }
             console.log("-------------------");
-        }
-
-        function getNeutralCounterpart(element) {
-            switch (element) {
-                case "water":
-                    return "earth";
-                case "earth":
-                    return "water";
-                case "fire":
-                    return "air";
-                case "air":
-                    return "fire";
-                default:
-                    return null;
-            }
         }
 
         onMounted(async () => {
