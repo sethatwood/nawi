@@ -264,6 +264,20 @@ export default {
                     false,
                     visited
                 );
+                const additionalCaptures = checkForCaptures(flippedIndex);
+                for (const additionalIndex of additionalCaptures) {
+                    await flipPiece(
+                        additionalIndex,
+                        capturingPlayer,
+                        capturingElement
+                    );
+                    await cascadeCaptures(
+                        additionalIndex,
+                        capturingElement,
+                        false,
+                        visited
+                    );
+                }
             }
 
             if (initial) {
@@ -272,6 +286,7 @@ export default {
                         ? "white"
                         : "black";
                 updateTurnIndicator();
+                updateScore(); // Add this line to update the score
             }
         }
 
