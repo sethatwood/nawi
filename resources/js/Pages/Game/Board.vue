@@ -88,6 +88,7 @@ export default {
             },
         };
         const ANIMATION_DURATION = 1000;
+        const DIRECTIONS = [-8, -1, 1, 8];
 
         const gameBoard = ref(null);
         const selectedElement = ref("fire");
@@ -200,6 +201,8 @@ export default {
                 },
                 turnIndicatorText: "black's turn (fire)",
             };
+            console.log("Game state initialized");
+            logGameState();
         }
 
         function changeElement(element) {
@@ -217,6 +220,13 @@ export default {
 
             // Update the selectedElement state
             state.selectedElement = element;
+        }
+
+        function createImg(element, player) {
+            const img = document.createElement("img");
+            img.src = `/images/${player}-${element}.svg`;
+            img.classList.add("transition-opacity");
+            return img;
         }
 
         async function cascadeCaptures(
@@ -265,23 +275,19 @@ export default {
             }
         }
 
-        function handleCellClick(event) {
+        async function handleCellClick(event) {
             const index = parseInt(event.target.dataset.index);
             if (state.gameState.board[index] === null) {
                 state.gameState.board[index] = {
                     player: state.gameState.currentPlayer,
                     element: state.selectedElement,
                 };
-                // Use the selectedElement in the SVG path
                 const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
                 const img = document.createElement("img");
                 img.src = svgPath;
                 event.target.appendChild(img);
-
-                cascadeCaptures(index, state.selectedElement, true);
-            } else {
-                cascadeCaptures(index, state.selectedElement, true);
             }
+            await cascadeCaptures(index, state.selectedElement, true);
         }
 
         async function flipStone(cell, img) {
@@ -305,10 +311,16 @@ export default {
                 setTimeout(() => {
                     cell.removeChild(oldImg);
                     img.classList.remove("fade-in");
-                    img.style.zIndex = "1"; // Reset z-index after the animation
+                    // img.style.zIndex = "1"; // Remove this line
                     resolve();
                 }, ANIMATION_DURATION);
             });
+        }
+
+        function nextTurn() {
+            state.gameState.currentPlayer =
+                state.gameState.currentPlayer === "black" ? "white" : "black";
+            updateTurnIndicator();
         }
 
         function checkForCaptures(index, initialCapture = false) {
@@ -372,16 +384,61 @@ export default {
             const svgPath = `/images/${newPlayer}-${newElement}.svg`;
             const img = document.createElement("img");
             img.src = svgPath;
+            await nextTick(); // Add this line to wait for DOM updates
             await flipStone(gameBoard.value.children[index], img);
         }
 
         function updateScore() {
+            console.log("updateScore start");
+            logGameState();
             state.gameState.score.black = state.gameState.board.filter(
                 (cell) => cell && cell.player === "black"
             ).length;
             state.gameState.score.white = state.gameState.board.filter(
                 (cell) => cell && cell.player === "white"
             ).length;
+            console.log("updateScore end");
+            logGameState();
+        }
+
+        function getPiece(cell) {
+            const img = cell.querySelector("img");
+            if (!img) return null;
+
+            const [player, element] = img.src
+                .match(/[^/]*$/)[0]
+                .split("-")[0]
+                .split(".");
+            return {
+                player,
+                element,
+            };
+        }
+
+        function isValidIndex(index) {
+            return index >= 0 && index < 64;
+        }
+
+        function logGameState() {
+            console.log("---- Game State ----");
+            console.log("Current Player:", state.gameState.currentPlayer);
+            console.log("Selected Element:", state.selectedElement);
+            console.log("Score:", state.gameState.score);
+            console.log("Board:");
+            for (let i = 0; i < 8; i++) {
+                let row = [];
+                for (let j = 0; j < 8; j++) {
+                    row.push(state.gameState.board[i * 8 + j]);
+                }
+                console.log(
+                    row
+                        .map((cell) =>
+                            cell ? `${cell.player[0]}-${cell.element[0]}` : "  "
+                        )
+                        .join(" ")
+                );
+            }
+            console.log("-------------------");
         }
 
         function getNeutralCounterpart(element) {
@@ -435,22 +492,18 @@ export default {
 @keyframes fade-in {
     0% {
         opacity: 0;
-        z-index: 2;
     }
     100% {
         opacity: 1;
-        z-index: 1;
     }
 }
 
 @keyframes fade-out {
     0% {
         opacity: 1;
-        z-index: 1;
     }
     100% {
         opacity: 0;
-        z-index: 0;
     }
 }
 
