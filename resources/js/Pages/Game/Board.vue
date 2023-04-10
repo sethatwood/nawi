@@ -218,31 +218,48 @@ export default {
             state.selectedElement = element;
         }
 
-        function cascadeCaptures(index, element, initial = false) {
+        async function cascadeCaptures(
+            index,
+            element,
+            initial = false,
+            visited = new Set()
+        ) {
             console.log("cascadeCaptures", index, element);
 
-            if (Object.keys(ELEMENTS).includes(element)) {
-                const flippedIndices = checkForCaptures(index, element);
+            // Check if the index has been visited already.
+            if (visited.has(index)) {
+                return;
+            }
 
-                flippedIndices.forEach((flippedIndex) => {
-                    const flippedCell = state.gameState.board[flippedIndex];
-                    cascadeCaptures(flippedIndex, flippedCell.element);
-                });
+            visited.add(index);
+
+            const capturingCell = state.gameState.board[index];
+            if (!capturingCell) return;
+
+            const capturingPlayer = capturingCell.player;
+            const capturingElement = capturingCell.element;
+            const flippedIndices = checkForCaptures(index, initial);
+
+            for (const flippedIndex of flippedIndices) {
+                const flippedCell = state.gameState.board[flippedIndex];
+                await flipPiece(
+                    flippedIndex,
+                    capturingPlayer,
+                    capturingElement
+                );
+                await cascadeCaptures(
+                    flippedIndex,
+                    capturingElement,
+                    false,
+                    visited
+                );
             }
 
             if (initial) {
-                const currentPlayer = state.gameState.currentPlayer;
-                const opponent = currentPlayer === "black" ? "white" : "black";
-
-                const flippedIndices = checkForCaptures(index, element);
-                flippedIndices.forEach((flippedIndex) => {
-                    const flippedCell = state.gameState.board[flippedIndex];
-                    if (flippedCell.player === opponent) {
-                        cascadeCaptures(flippedIndex, flippedCell.element);
-                    }
-                });
-
-                state.gameState.currentPlayer = opponent;
+                state.gameState.currentPlayer =
+                    state.gameState.currentPlayer === "black"
+                        ? "white"
+                        : "black";
                 updateTurnIndicator();
             }
         }
@@ -259,83 +276,57 @@ export default {
                 const img = document.createElement("img");
                 img.src = svgPath;
                 event.target.appendChild(img);
-                cascadeCaptures(index, true);
+
+                cascadeCaptures(index, state.selectedElement, true);
+            } else {
+                cascadeCaptures(index, state.selectedElement, true);
             }
-            cascadeCaptures(index, state.selectedElement, true);
         }
 
         function flipStone(cell, img) {
-            const oldImg = cell.querySelector("img");
-            oldImg.style.opacity = 0;
-            img.style.opacity = 0;
-            cell.appendChild(img);
-            setTimeout(() => {
-                img.style.opacity = 1;
-            }, 100);
-            setTimeout(() => {
-                cell.removeChild(oldImg);
-            }, 1000);
+            return new Promise((resolve) => {
+                const oldImg = cell.querySelector("img");
+                oldImg.style.transition = "opacity 1s";
+                img.style.transition = "opacity 1s";
+                oldImg.style.opacity = 0;
+                img.style.opacity = 0;
+                cell.appendChild(img);
+                setTimeout(() => {
+                    img.style.opacity = 1;
+                }, 100);
+                setTimeout(() => {
+                    cell.removeChild(oldImg);
+                    resolve();
+                }, 1100);
+            });
         }
 
-        function checkForCaptures(index, element) {
-            console.log("checkForCaptures", index, element); // Add this line
+        function checkForCaptures(index, initialCapture = false) {
+            const capturingCell = state.gameState.board[index];
+            if (!capturingCell) return [];
 
-            const currentPlayerElement = ELEMENTS[element];
+            const capturingElement = capturingCell.element;
+            const capturingPlayer = capturingCell.player;
+            const targets = getAdjacentIndices(index);
+            const captures = [];
 
-            const opponent =
-                state.gameState.currentPlayer === "black" ? "white" : "black";
-            const neighbors = getAdjacentIndices(index);
-
-            const flippedIndices = [];
-            let ownPieceFlipped = false;
-
-            neighbors.forEach((neighborIndex) => {
-                const neighborCell = state.gameState.board[neighborIndex];
-
-                if (neighborCell && neighborCell.player === opponent) {
-                    const neighborElement = ELEMENTS[neighborCell.element];
+            targets.forEach((targetIndex) => {
+                const targetCell = state.gameState.board[targetIndex];
+                if (targetCell) {
+                    const targetElement = targetCell.element;
+                    const targetPlayer = targetCell.player;
+                    const beats = ELEMENTS[capturingElement].beats;
 
                     if (
-                        currentPlayerElement.beats.includes(
-                            neighborElement.element
-                        )
+                        capturingPlayer !== targetPlayer &&
+                        (initialCapture || beats.includes(targetElement))
                     ) {
-                        flippedIndices.push(neighborIndex);
+                        captures.push(targetIndex);
                     }
                 }
             });
 
-            flippedIndices.forEach((flippedIndex) => {
-                flipPiece(
-                    flippedIndex,
-                    state.gameState.currentPlayer,
-                    state.selectedElement
-                );
-                checkForCaptures(flippedIndex);
-            });
-
-            if (flippedIndices.length === 0) {
-                neighbors.forEach((neighborIndex) => {
-                    const neighborCell = state.gameState.board[neighborIndex];
-
-                    if (neighborCell && neighborCell.player === opponent) {
-                        const neighborElement = ELEMENTS[neighborCell.element];
-
-                        if (
-                            neighborElement.beats.includes(
-                                currentPlayerElement.element
-                            )
-                        ) {
-                            ownPieceFlipped = true;
-                            flipPiece(index, opponent, neighborCell.element);
-                        }
-                    }
-                });
-            }
-
-            updateScore();
-
-            return flippedIndices;
+            return captures;
         }
 
         function getAdjacentIndices(index) {
@@ -362,7 +353,7 @@ export default {
                 .filter((index) => index !== null);
         }
 
-        function flipPiece(index, newPlayer, newElement) {
+        async function flipPiece(index, newPlayer, newElement) {
             state.gameState.board[index] = {
                 player: newPlayer,
                 element: newElement,
@@ -371,7 +362,7 @@ export default {
             const svgPath = `/images/${newPlayer}-${newElement}.svg`;
             const img = document.createElement("img");
             img.src = svgPath;
-            flipStone(gameBoard.value.children[index], img);
+            await flipStone(gameBoard.value.children[index], img);
         }
 
         function updateScore() {
