@@ -231,10 +231,18 @@ export default {
             }
 
             if (initial) {
-                state.gameState.currentPlayer =
-                    state.gameState.currentPlayer === "black"
-                        ? "white"
-                        : "black";
+                const currentPlayer = state.gameState.currentPlayer;
+                const opponent = currentPlayer === "black" ? "white" : "black";
+
+                const flippedIndices = checkForCaptures(index, element);
+                flippedIndices.forEach((flippedIndex) => {
+                    const flippedCell = state.gameState.board[flippedIndex];
+                    if (flippedCell.player === opponent) {
+                        cascadeCaptures(flippedIndex, flippedCell.element);
+                    }
+                });
+
+                state.gameState.currentPlayer = opponent;
                 updateTurnIndicator();
             }
         }
