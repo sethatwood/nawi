@@ -229,54 +229,45 @@ export default {
             return img;
         }
 
-        async function cascadeCaptures(
-            index,
-            element,
-            initial = false,
-            visited = new Set()
-        ) {
+        function canElementFlip(element, targetElement) {
+            const hierarchy = {
+                air: "water",
+                water: "fire",
+                fire: "earth",
+                earth: "air",
+            };
+
+            return hierarchy[element] === targetElement;
+        }
+
+        async function cascadeCaptures(index, element, initial = false) {
             console.log("cascadeCaptures", index, element);
 
-            // Check if the index has been visited already.
-            if (visited.has(index)) {
-                return;
-            }
-
-            visited.add(index);
+            const visited = new Set();
+            const queue = [index];
 
             const capturingCell = state.gameState.board[index];
-            if (!capturingCell) return;
-
             const capturingPlayer = capturingCell.player;
             const capturingElement = capturingCell.element;
-            const flippedIndices = checkForCaptures(index, initial);
 
-            for (const flippedIndex of flippedIndices) {
-                const flippedCell = state.gameState.board[flippedIndex];
-                await flipPiece(
-                    flippedIndex,
-                    capturingPlayer,
-                    capturingElement
-                );
-                await cascadeCaptures(
-                    flippedIndex,
-                    capturingElement,
-                    false,
-                    visited
-                );
-                const additionalCaptures = checkForCaptures(flippedIndex);
-                for (const additionalIndex of additionalCaptures) {
+            while (queue.length > 0) {
+                const currentIndex = queue.shift();
+
+                if (visited.has(currentIndex)) {
+                    continue;
+                }
+                visited.add(currentIndex);
+
+                const flippedIndices = checkForCaptures(currentIndex, initial);
+
+                for (const flippedIndex of flippedIndices) {
+                    const flippedCell = state.gameState.board[flippedIndex];
                     await flipPiece(
-                        additionalIndex,
+                        flippedIndex,
                         capturingPlayer,
                         capturingElement
                     );
-                    await cascadeCaptures(
-                        additionalIndex,
-                        capturingElement,
-                        false,
-                        visited
-                    );
+                    queue.push(flippedIndex);
                 }
             }
 
@@ -338,32 +329,38 @@ export default {
             updateTurnIndicator();
         }
 
-        function checkForCaptures(index, initialCapture = false) {
-            const capturingCell = state.gameState.board[index];
-            if (!capturingCell) return [];
+        function isValidCoordinate(row, col) {
+            return row >= 0 && row < 8 && col >= 0 && col < 8;
+        }
 
-            const capturingElement = capturingCell.element;
-            const capturingPlayer = capturingCell.player;
-            const targets = getAdjacentIndices(index);
-            const captures = [];
+        function checkForCaptures(index, initial = false) {
+            const row = Math.floor(index / 8);
+            const col = index % 8;
 
-            targets.forEach((targetIndex) => {
-                const targetCell = state.gameState.board[targetIndex];
-                if (targetCell) {
-                    const targetElement = targetCell.element;
-                    const targetPlayer = targetCell.player;
-                    const beats = ELEMENTS[capturingElement].beats;
+            const capturingElement = state.gameState.board[index].element;
+            const capturingPlayer = state.gameState.board[index].player;
+
+            const indicesToCapture = [];
+
+            for (const direction of DIRECTIONS) {
+                const newRow = row + Math.floor(direction / 8);
+                const newCol = col + (direction % 8);
+
+                if (isValidCoordinate(newRow, newCol)) {
+                    const newIndex = newRow * 8 + newCol;
+                    const targetCell = state.gameState.board[newIndex];
 
                     if (
-                        capturingPlayer !== targetPlayer &&
-                        (initialCapture || beats.includes(targetElement))
+                        targetCell &&
+                        targetCell.player !== capturingPlayer &&
+                        canElementFlip(capturingElement, targetCell.element)
                     ) {
-                        captures.push(targetIndex);
+                        indicesToCapture.push(newIndex);
                     }
                 }
-            });
+            }
 
-            return captures;
+            return indicesToCapture;
         }
 
         function getAdjacentIndices(index) {
