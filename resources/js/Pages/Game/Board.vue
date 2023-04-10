@@ -71,15 +71,19 @@ export default {
     setup() {
         const ELEMENTS = {
             fire: {
+                element: "fire",
                 beats: ["earth"],
             },
             water: {
+                element: "water",
                 beats: ["fire"],
             },
             earth: {
+                element: "earth",
                 beats: ["air"],
             },
             air: {
+                element: "air",
                 beats: ["water"],
             },
         };
@@ -214,19 +218,19 @@ export default {
             state.selectedElement = element;
         }
 
-        function handleCellClick(event) {
-            const index = parseInt(event.target.dataset.index);
-            if (state.gameState.board[index] === null) {
-                state.gameState.board[index] = {
-                    player: state.gameState.currentPlayer,
-                    element: state.gameState.selectedElement,
-                };
-                // Use the selectedElement in the SVG path
-                const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
-                const img = document.createElement("img");
-                img.src = svgPath;
-                event.target.appendChild(img);
-                checkForCaptures(index);
+        function cascadeCaptures(index, element, initial = false) {
+            console.log("cascadeCaptures", index, element);
+
+            if (Object.keys(ELEMENTS).includes(element)) {
+                const flippedIndices = checkForCaptures(index, element);
+
+                flippedIndices.forEach((flippedIndex) => {
+                    const flippedCell = state.gameState.board[flippedIndex];
+                    cascadeCaptures(flippedIndex, flippedCell.element);
+                });
+            }
+
+            if (initial) {
                 state.gameState.currentPlayer =
                     state.gameState.currentPlayer === "black"
                         ? "white"
@@ -235,9 +239,100 @@ export default {
             }
         }
 
-        function checkForCaptures(index) {
+        function handleCellClick(event) {
+            const index = parseInt(event.target.dataset.index);
+            if (state.gameState.board[index] === null) {
+                state.gameState.board[index] = {
+                    player: state.gameState.currentPlayer,
+                    element: state.selectedElement,
+                };
+                // Use the selectedElement in the SVG path
+                const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
+                const img = document.createElement("img");
+                img.src = svgPath;
+                event.target.appendChild(img);
+                cascadeCaptures(index, true);
+            }
+            cascadeCaptures(index, state.selectedElement, true);
+        }
+
+        function flipStone(cell, img) {
+            const oldImg = cell.querySelector("img");
+            oldImg.style.opacity = 0;
+            img.style.opacity = 0;
+            cell.appendChild(img);
+            setTimeout(() => {
+                img.style.opacity = 1;
+            }, 100);
+            setTimeout(() => {
+                cell.removeChild(oldImg);
+            }, 1000);
+        }
+
+        function checkForCaptures(index, element) {
+            console.log("checkForCaptures", index, element); // Add this line
+
+            const currentPlayerElement = ELEMENTS[element];
+
             const opponent =
                 state.gameState.currentPlayer === "black" ? "white" : "black";
+            const neighbors = getAdjacentIndices(index);
+
+            const flippedIndices = [];
+            let ownPieceFlipped = false;
+
+            neighbors.forEach((neighborIndex) => {
+                const neighborCell = state.gameState.board[neighborIndex];
+
+                if (neighborCell && neighborCell.player === opponent) {
+                    const neighborElement = ELEMENTS[neighborCell.element];
+
+                    if (
+                        currentPlayerElement.beats.includes(
+                            neighborElement.element
+                        )
+                    ) {
+                        flippedIndices.push(neighborIndex);
+                    }
+                }
+            });
+
+            flippedIndices.forEach((flippedIndex) => {
+                flipPiece(
+                    flippedIndex,
+                    state.gameState.currentPlayer,
+                    state.selectedElement
+                );
+                checkForCaptures(flippedIndex);
+            });
+
+            if (flippedIndices.length === 0) {
+                neighbors.forEach((neighborIndex) => {
+                    const neighborCell = state.gameState.board[neighborIndex];
+
+                    if (neighborCell && neighborCell.player === opponent) {
+                        const neighborElement = ELEMENTS[neighborCell.element];
+
+                        if (
+                            neighborElement.beats.includes(
+                                currentPlayerElement.element
+                            )
+                        ) {
+                            ownPieceFlipped = true;
+                            flipPiece(index, opponent, neighborCell.element);
+                        }
+                    }
+                });
+            }
+
+            updateScore();
+
+            return flippedIndices;
+        }
+
+        function getAdjacentIndices(index) {
+            const x = index % 8;
+            const y = Math.floor(index / 8);
             const neighbors = [
                 { x: 1, y: 0 },
                 { x: -1, y: 0 },
@@ -245,50 +340,54 @@ export default {
                 { x: 0, y: -1 },
             ];
 
-            const currentPlayerElement =
-                ELEMENTS[state.gameState.selectedElement];
-            const x = index % 8;
-            const y = Math.floor(index / 8);
+            return neighbors
+                .map((neighbor) => {
+                    const newX = x + neighbor.x;
+                    const newY = y + neighbor.y;
 
-            neighbors.forEach((neighbor) => {
-                const newX = x + neighbor.x;
-                const newY = y + neighbor.y;
-
-                if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
-                    const neighborIndex = newY * 8 + newX;
-                    const neighborCell = state.gameState.board[neighborIndex];
-
-                    if (neighborCell && neighborCell.player === opponent) {
-                        const neighborElement = ELEMENTS[neighborCell.element];
-                        if (
-                            currentPlayerElement.beats.includes(
-                                neighborElement.element
-                            )
-                        ) {
-                            state.gameState.board[neighborIndex] = {
-                                player: state.gameState.currentPlayer,
-                                element: state.gameState.selectedElement,
-                            };
-                            const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
-                            const img = document.createElement("img");
-                            img.src = svgPath;
-                            gameBoard.value.children[neighborIndex].innerHTML =
-                                "";
-                            gameBoard.value.children[neighborIndex].appendChild(
-                                img
-                            );
-                        }
+                    if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+                        return newY * 8 + newX;
                     }
-                }
-            });
 
-            // Update the score based on the number of pieces on the board
+                    return null;
+                })
+                .filter((index) => index !== null);
+        }
+
+        function flipPiece(index, newPlayer, newElement) {
+            state.gameState.board[index] = {
+                player: newPlayer,
+                element: newElement,
+            };
+
+            const svgPath = `/images/${newPlayer}-${newElement}.svg`;
+            const img = document.createElement("img");
+            img.src = svgPath;
+            flipStone(gameBoard.value.children[index], img);
+        }
+
+        function updateScore() {
             state.gameState.score.black = state.gameState.board.filter(
                 (cell) => cell && cell.player === "black"
             ).length;
             state.gameState.score.white = state.gameState.board.filter(
                 (cell) => cell && cell.player === "white"
             ).length;
+        }
+
+        function getNeutralCounterpart(element) {
+            switch (element) {
+                case "water":
+                    return "earth";
+                case "earth":
+                    return "water";
+                case "fire":
+                    return "air";
+                case "air":
+                    return "fire";
+                default:
+                    return null;
+            }
         }
 
         onMounted(async () => {
@@ -319,5 +418,8 @@ export default {
     border: 1px solid rgb(43, 210, 191);
     border-radius: 8px;
     padding: 2px 4px;
+}
+:deep(.game-board img) {
+    transition: opacity 1s;
 }
 </style>
