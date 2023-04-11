@@ -69,28 +69,26 @@ import { ref, nextTick, onMounted, reactive, toRefs, computed } from "vue";
 
 export default {
     setup() {
+        // CONSTANTS
         const ELEMENTS = {
-            fire: {
-                element: "fire",
-                beats: ["earth"],
+            air: {
+                element: "air",
+                beats: ["water"],
             },
             water: {
                 element: "water",
                 beats: ["fire"],
             },
+            fire: {
+                element: "fire",
+                beats: ["earth"],
+            },
             earth: {
                 element: "earth",
                 beats: ["air"],
             },
-            air: {
-                element: "air",
-                beats: ["water"],
-            },
         };
         const ANIMATION_DURATION = 1000;
-        const ADJACENT_OFFSETS = [-1, 1, -9, 9, -8, 8, -7, 7];
-        const FLIP_DELAY = 500;
-
         const gameBoard = ref(null);
         const state = reactive({
             gameState: null,
@@ -100,19 +98,11 @@ export default {
             return state.gameState.currentPlayer === "black" ? "⚫️" : "⚪️";
         });
 
-        function isInBounds(index) {
-            return index >= 0 && index < 64;
-        }
-
-        function updateTurnIndicator() {
-            state.gameState.turnIndicatorText = `${state.gameState.currentPlayer}'s turn (${state.gameState.selectedElement})`;
-        }
-
+        // BOARD RENDERING AND RESIZING
         async function createBoard() {
             await nextTick();
             const container = document.getElementById("board-container");
             gameBoard.value = container;
-
             if (container) {
                 const boardSize = Math.min(
                     gameBoard.value.clientWidth,
@@ -136,8 +126,6 @@ export default {
                 console.error("gameBoard.value is null");
                 return;
             }
-            // const cellSize = Math.floor(gameBoard.value.clientWidth / 8);
-
             for (let i = 0; i < 64; i++) {
                 const cell = document.createElement("div");
                 cell.classList.add(
@@ -146,8 +134,6 @@ export default {
                     "relative",
                     "cursor-pointer"
                 );
-                // cell.style.width = `${cellSize}px`;
-                // cell.style.height = `${cellSize}px`;
                 cell.style.aspectRatio = "1 / 1";
                 cell.dataset.index = i;
                 cell.addEventListener("click", handleCellClick);
@@ -156,44 +142,40 @@ export default {
         }
 
         function resizeBoard() {
-            // Calculate the available height
             const controlsHeight =
                 document.getElementById("element-selector").clientHeight;
             const turnIndicatorHeight =
                 document.getElementById("turn-indicator").clientHeight;
-            const containerPadding = 32; // You have 4 units of padding in the container (4 * 8px) = 32px
-            const marginBottom = 16; // You have 2 units of margin-bottom in the turn indicator and element selector (2 * 8px) = 16px
-
+            const containerPadding = 32;
+            const marginBottom = 16;
             const availableHeight =
                 window.innerHeight -
                 controlsHeight -
                 turnIndicatorHeight -
                 containerPadding -
                 marginBottom;
-
-            // Log the values for debugging
-            console.log("Window inner height:", window.innerHeight);
-            console.log("Controls height:", controlsHeight);
-            console.log("Turn indicator height:", turnIndicatorHeight);
-            console.log("Container padding:", containerPadding);
-            console.log("Margin bottom:", marginBottom);
-            console.log("Available height:", availableHeight);
-
             const boardSize = Math.min(
                 window.innerWidth * 0.9,
                 availableHeight * 0.9
             );
             gameBoard.value.style.width = `${boardSize}px`;
             gameBoard.value.style.height = `${boardSize}px`;
-
-            const cellSize = Math.floor(boardSize / 9) - 1;
-            const cells = gameBoard.value.querySelectorAll("div[data-index]");
-            // cells.forEach((cell) => {
-            //     cell.style.width = `${cellSize}px`;
-            //     cell.style.height = `${cellSize}px`;
-            // });
         }
 
+        // ELEMENT SELECTORS
+        function changeElement(element) {
+            document.querySelectorAll(".element-btn").forEach((btn) => {
+                btn.classList.remove("selected");
+            });
+            document
+                .querySelectorAll(`[data-element="${element}"]`)
+                .forEach((btn) => {
+                    btn.classList.add("selected");
+                });
+            state.selectedElement = element;
+        }
+
+        // GAME LOGIC
         function initGameState() {
             state.gameState = {
                 currentPlayer: "black",
@@ -209,80 +191,60 @@ export default {
             logGameState();
         }
 
-        function changeElement(element) {
-            // Remove the 'selected' class from all buttons
-            document.querySelectorAll(".element-btn").forEach((btn) => {
-                btn.classList.remove("selected");
-            });
-
-            // Add the 'selected' class to the active element buttons
-            document
-                .querySelectorAll(`[data-element="${element}"]`)
-                .forEach((btn) => {
-                    btn.classList.add("selected");
-                });
-
-            // Update the selectedElement state
-            state.selectedElement = element;
-        }
-
-        function doesElementBeat(attacker, defender) {
-            console.log("doesElementBeat", attacker, defender);
-
-            const attackingElement = ELEMENTS[attacker];
-            const defendingElement = ELEMENTS[defender];
-
-            if (attackingElement && defendingElement) {
-                return attackingElement.beats.includes(
-                    defendingElement.element
+        function logGameState() {
+            console.log("---- Game State ----");
+            console.log("Current Player:", state.gameState.currentPlayer);
+            console.log("Selected Element:", state.selectedElement);
+            console.log("Score:", state.gameState.score);
+            console.log("Board:");
+            for (let i = 0; i < 8; i++) {
+                let row = [];
+                for (let j = 0; j < 8; j++) {
+                    row.push(state.gameState.board[i * 8 + j]);
+                }
+                console.log(
+                    `r${i + 1} |` +
+                        row
+                            .map((cell, index) =>
+                                cell
+                                    ? ` c${index + 1}•${cell.player[0]}${
+                                          cell.element[0]
+                                      } |`
+                                    : ` c${index + 1}    |`
+                            )
+                            .join("")
                 );
-            } else {
-                return false;
             }
         }
 
-        async function applyCaptures(index) {
-            const cell = state.gameState.board[index];
-            const opponent = cell.player === "black" ? "white" : "black";
-            const currentPlayerStones = state.gameState.board.filter(
-                (stone) =>
-                    stone && stone.player === state.gameState.currentPlayer
-            );
-            const currentElementCount = currentPlayerStones.filter(
-                (stone) => stone.element === state.selectedElement
-            ).length;
+        async function handleCellClick(event) {
+            console.log("Cell clicked:", event.target.dataset.index);
+            logGameState();
+            const index = parseInt(event.target.dataset.index);
 
-            if (currentElementCount < 16) {
+            if (state.gameState.board[index] === null) {
                 state.gameState.board[index] = {
-                    player: opponent,
+                    player: state.gameState.currentPlayer,
                     element: state.selectedElement,
                 };
-
-                const cellDiv = gameBoard.value.querySelector(
-                    `div[data-index="${index}"]`
-                );
-                const svgPath = `/images/${opponent}-${state.selectedElement}.svg`;
+                const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
                 const img = document.createElement("img");
                 img.src = svgPath;
-                console.log("Flipping stone at index:", index);
-                await flipStone(cellDiv, img);
-            } else {
-                console.log(
-                    "Not flipping stone at index:",
-                    index,
-                    " - max element count reached"
-                );
+                event.target.appendChild(img);
+
+                await cascadeCaptures(index, new Set());
             }
+            nextTurn();
+            console.log("nextTurn() called");
+            logGameState();
         }
 
         async function cascadeCaptures(index, ignoreIndices = new Set()) {
             console.log("Cascading from index:", index);
-            ignoreIndices.add(index); // Add the current index to ignoreIndices
+            ignoreIndices.add(index);
             const adjacentIndices = getAdjacentIndices(index);
-
             for (const adjIndex of adjacentIndices) {
                 if (!ignoreIndices.has(adjIndex)) {
-                    // Check if adjIndex is not in ignoreIndices
                     const attacker = state.gameState.board[index];
                     const defender = state.gameState.board[adjIndex];
 
@@ -294,7 +256,7 @@ export default {
                         if (attackerWins) {
                             console.log("Capture at index:", adjIndex);
                             await applyCaptures(adjIndex);
-                            await cascadeCaptures(adjIndex, ignoreIndices); // Pass ignoreIndices to the recursive call
+                            await cascadeCaptures(adjIndex, ignoreIndices);
                         }
                     }
                 }
@@ -304,7 +266,6 @@ export default {
         function getAdjacentIndices(index) {
             const row = Math.floor(index / 8);
             const col = index % 8;
-
             const adjacentIndices = [
                 index - 9,
                 index - 8,
@@ -329,52 +290,65 @@ export default {
             return adjacentIndices;
         }
 
-        async function handleCellClick(event) {
-            console.log("Cell clicked:", event.target.dataset.index);
-            logGameState();
-            const index = parseInt(event.target.dataset.index);
+        function doesElementBeat(attacker, defender) {
+            console.log("doesElementBeat", attacker, defender);
+            const attackingElement = ELEMENTS[attacker];
+            const defendingElement = ELEMENTS[defender];
+            if (attackingElement && defendingElement) {
+                return attackingElement.beats.includes(
+                    defendingElement.element
+                );
+            } else {
+                return false;
+            }
+        }
 
-            if (state.gameState.board[index] === null) {
+        async function applyCaptures(index) {
+            const cell = state.gameState.board[index];
+            const opponent = cell.player === "black" ? "white" : "black";
+            const currentPlayerStones = state.gameState.board.filter(
+                (stone) =>
+                    stone && stone.player === state.gameState.currentPlayer
+            );
+            const currentElementCount = currentPlayerStones.filter(
+                (stone) => stone.element === state.selectedElement
+            ).length;
+            if (currentElementCount < 16) {
                 state.gameState.board[index] = {
-                    player: state.gameState.currentPlayer,
+                    player: opponent,
                     element: state.selectedElement,
                 };
-                const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
+                const cellDiv = gameBoard.value.querySelector(
+                    `div[data-index="${index}"]`
+                );
+                const svgPath = `/images/${opponent}-${state.selectedElement}.svg`;
                 const img = document.createElement("img");
                 img.src = svgPath;
-                event.target.appendChild(img);
-
-                // Call cascadeCaptures after placing the stone
-                await cascadeCaptures(index, new Set());
+                console.log("Flipping stone at index:", index);
+                await flipStone(cellDiv, img);
+            } else {
+                console.log(
+                    "Not flipping stone at index:",
+                    index,
+                    " - max element count reached"
+                );
             }
-
-            nextTurn(); // Add this line
-            console.log("nextTurn() called");
-            logGameState();
         }
 
         async function flipStone(cell, img) {
             return new Promise((resolve) => {
                 const oldImg = cell.querySelector("img");
-
-                // Set the position of the images within their cells.
                 oldImg.style.position = "absolute";
                 img.style.position = "absolute";
                 img.style.left = "0";
                 img.style.top = "0";
-
-                // Add z-index to the new image so it appears on top of the old image.
                 img.style.zIndex = "2";
-
                 oldImg.classList.add("fade-out");
                 img.classList.add("fade-in");
-
                 cell.appendChild(img);
-
                 setTimeout(() => {
                     cell.removeChild(oldImg);
                     img.classList.remove("fade-in");
-                    // img.style.zIndex = "1"; // Remove this line
                     resolve();
                 }, ANIMATION_DURATION);
             });
@@ -383,61 +357,7 @@ export default {
         function nextTurn() {
             state.gameState.currentPlayer =
                 state.gameState.currentPlayer === "black" ? "white" : "black";
-            updateTurnIndicator();
-        }
-
-        function checkForCaptures(index, element) {
-            const opponent =
-                state.gameState.currentPlayer === "black" ? "white" : "black";
-            const captures = [];
-            const currentCell = state.gameState.board[index];
-
-            if (currentCell.player === opponent) {
-                return captures;
-            }
-
-            // Check all adjacent cells
-            for (const offset of ADJACENT_OFFSETS) {
-                const newIndex = index + offset;
-
-                if (isInBounds(newIndex)) {
-                    const adjacentCell = state.gameState.board[newIndex];
-
-                    if (adjacentCell && adjacentCell.player === opponent) {
-                        if (doesElementBeat(element, adjacentCell.element)) {
-                            captures.push(newIndex);
-                        }
-                    }
-                }
-            }
-
-            return captures;
-        }
-
-        function sleep(ms) {
-            return new Promise((resolve) => setTimeout(resolve, ms));
-        }
-
-        function logGameState() {
-            console.log("---- Game State ----");
-            console.log("Current Player:", state.gameState.currentPlayer);
-            console.log("Selected Element:", state.selectedElement);
-            console.log("Score:", state.gameState.score);
-            console.log("Board:");
-            for (let i = 0; i < 8; i++) {
-                let row = [];
-                for (let j = 0; j < 8; j++) {
-                    row.push(state.gameState.board[i * 8 + j]);
-                }
-                console.log(
-                    row
-                        .map((cell) =>
-                            cell ? `${cell.player[0]}-${cell.element[0]}` : "  "
-                        )
-                        .join(" ")
-                );
-            }
-            console.log("-------------------");
+            state.gameState.turnIndicatorText = `${state.gameState.currentPlayer}'s turn (${state.gameState.selectedElement})`;
         }
 
         onMounted(async () => {
@@ -463,16 +383,21 @@ export default {
 </script>
 
 <style scoped>
+:deep(.game-board img) {
+    transition: opacity 1s;
+}
 :deep(.selected) {
     background-color: rgba(83, 253, 234, 0.512);
     border: 1px solid rgb(43, 210, 191);
     border-radius: 8px;
     padding: 2px 4px;
 }
-:deep(.game-board img) {
-    transition: opacity 1s;
+:deep(.fade-in) {
+    animation: fade-in 1s forwards;
 }
-
+:deep(.fade-out) {
+    animation: fade-out 1s forwards;
+}
 @keyframes fade-in {
     0% {
         opacity: 0;
@@ -481,7 +406,6 @@ export default {
         opacity: 1;
     }
 }
-
 @keyframes fade-out {
     0% {
         opacity: 1;
@@ -489,13 +413,5 @@ export default {
     100% {
         opacity: 0;
     }
-}
-
-:deep(.fade-in) {
-    animation: fade-in 1s forwards;
-}
-
-:deep(.fade-out) {
-    animation: fade-out 1s forwards;
 }
 </style>
