@@ -241,50 +241,97 @@ export default {
             }
         }
 
-        async function applyCaptures(captures) {
-            for (const index of captures) {
-                const cell = state.gameState.board[index];
-                const opponent = cell.player === "black" ? "white" : "black";
-                const currentPlayerStones = state.gameState.board.filter(
-                    (stone) =>
-                        stone && stone.player === state.gameState.currentPlayer
+        async function applyCaptures(index) {
+            const cell = state.gameState.board[index];
+            const opponent = cell.player === "black" ? "white" : "black";
+            const currentPlayerStones = state.gameState.board.filter(
+                (stone) =>
+                    stone && stone.player === state.gameState.currentPlayer
+            );
+            const currentElementCount = currentPlayerStones.filter(
+                (stone) => stone.element === state.selectedElement
+            ).length;
+
+            if (currentElementCount < 16) {
+                state.gameState.board[index] = {
+                    player: opponent,
+                    element: state.selectedElement,
+                };
+
+                const cellDiv = gameBoard.value.querySelector(
+                    `div[data-index="${index}"]`
                 );
-                const currentElementCount = currentPlayerStones.filter(
-                    (stone) => stone.element === state.selectedElement
-                ).length;
+                const svgPath = `/images/${opponent}-${state.selectedElement}.svg`;
+                const img = document.createElement("img");
+                img.src = svgPath;
+                console.log("Flipping stone at index:", index);
+                await flipStone(cellDiv, img);
+            } else {
+                console.log(
+                    "Not flipping stone at index:",
+                    index,
+                    " - max element count reached"
+                );
+            }
+        }
 
-                if (currentElementCount < 16) {
-                    state.gameState.board[index] = {
-                        player: opponent,
-                        element: state.selectedElement,
-                    };
+        async function cascadeCaptures(index, ignoreIndices = new Set()) {
+            console.log("Cascading from index:", index);
+            ignoreIndices.add(index); // Add the current index to ignoreIndices
+            const adjacentIndices = getAdjacentIndices(index);
 
-                    const cellDiv = gameBoard.value.querySelector(
-                        `div[data-index="${index}"]`
-                    );
-                    const svgPath = `/images/${opponent}-${state.selectedElement}.svg`;
-                    const img = document.createElement("img");
-                    img.src = svgPath;
-                    await flipStone(cellDiv, img);
+            for (const adjIndex of adjacentIndices) {
+                if (!ignoreIndices.has(adjIndex)) {
+                    // Check if adjIndex is not in ignoreIndices
+                    const attacker = state.gameState.board[index];
+                    const defender = state.gameState.board[adjIndex];
+
+                    if (defender && attacker.player !== defender.player) {
+                        const attackerWins = doesElementBeat(
+                            attacker.element,
+                            defender.element
+                        );
+                        if (attackerWins) {
+                            console.log("Capture at index:", adjIndex);
+                            await applyCaptures(adjIndex);
+                            await cascadeCaptures(adjIndex, ignoreIndices); // Pass ignoreIndices to the recursive call
+                        }
+                    }
                 }
             }
         }
 
-        async function cascadeCaptures(index, element) {
-            if (
-                state.gameState.currentPlayer ===
-                state.gameState.board[index].player
-            ) {
-                const captures = checkForCaptures(index, element);
-                if (captures.length > 0) {
-                    await sleep(FLIP_DELAY);
-                    applyCaptures(captures);
-                    await cascadeCaptures(index, element);
-                }
-            }
+        function getAdjacentIndices(index) {
+            const row = Math.floor(index / 8);
+            const col = index % 8;
+
+            const adjacentIndices = [
+                index - 9,
+                index - 8,
+                index - 7,
+                index - 1,
+                index + 1,
+                index + 7,
+                index + 8,
+                index + 9,
+            ].filter((adjIndex) => {
+                const adjRow = Math.floor(adjIndex / 8);
+                const adjCol = adjIndex % 8;
+
+                return (
+                    adjIndex >= 0 &&
+                    adjIndex < 64 &&
+                    Math.abs(row - adjRow) <= 1 &&
+                    Math.abs(col - adjCol) <= 1
+                );
+            });
+
+            return adjacentIndices;
         }
 
         async function handleCellClick(event) {
+            console.log("Cell clicked:", event.target.dataset.index);
+            logGameState();
             const index = parseInt(event.target.dataset.index);
 
             if (state.gameState.board[index] === null) {
@@ -298,10 +345,12 @@ export default {
                 event.target.appendChild(img);
 
                 // Call cascadeCaptures after placing the stone
-                await cascadeCaptures(index, state.selectedElement);
+                await cascadeCaptures(index, new Set());
             }
 
             nextTurn(); // Add this line
+            console.log("nextTurn() called");
+            logGameState();
         }
 
         async function flipStone(cell, img) {
