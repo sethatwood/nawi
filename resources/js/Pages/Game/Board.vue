@@ -231,127 +231,18 @@ export default {
                 const img = document.createElement("img");
                 img.src = svgPath;
                 event.target.appendChild(img);
-
-                await cascadeCaptures(index, new Set());
             }
+
+            state.gameState.score.black = state.gameState.board.filter(
+                (cell) => cell && cell.player === "black"
+            ).length;
+            state.gameState.score.white = state.gameState.board.filter(
+                (cell) => cell && cell.player === "white"
+            ).length;
+
             nextTurn();
             console.log("nextTurn() called");
             logGameState();
-        }
-
-        async function cascadeCaptures(index, ignoreIndices = new Set()) {
-            console.log("Cascading from index:", index);
-            ignoreIndices.add(index);
-            const adjacentIndices = getAdjacentIndices(index);
-            for (const adjIndex of adjacentIndices) {
-                if (!ignoreIndices.has(adjIndex)) {
-                    const attacker = state.gameState.board[index];
-                    const defender = state.gameState.board[adjIndex];
-
-                    if (defender && attacker.player !== defender.player) {
-                        const attackerWins = doesElementBeat(
-                            attacker.element,
-                            defender.element
-                        );
-                        if (attackerWins) {
-                            console.log("Capture at index:", adjIndex);
-                            await applyCaptures(adjIndex);
-                            await cascadeCaptures(adjIndex, ignoreIndices);
-                        }
-                    }
-                }
-            }
-        }
-
-        function getAdjacentIndices(index) {
-            const row = Math.floor(index / 8);
-            const col = index % 8;
-            const adjacentIndices = [
-                index - 9,
-                index - 8,
-                index - 7,
-                index - 1,
-                index + 1,
-                index + 7,
-                index + 8,
-                index + 9,
-            ].filter((adjIndex) => {
-                const adjRow = Math.floor(adjIndex / 8);
-                const adjCol = adjIndex % 8;
-
-                return (
-                    adjIndex >= 0 &&
-                    adjIndex < 64 &&
-                    Math.abs(row - adjRow) <= 1 &&
-                    Math.abs(col - adjCol) <= 1
-                );
-            });
-
-            return adjacentIndices;
-        }
-
-        function doesElementBeat(attacker, defender) {
-            console.log("doesElementBeat", attacker, defender);
-            const attackingElement = ELEMENTS[attacker];
-            const defendingElement = ELEMENTS[defender];
-            if (attackingElement && defendingElement) {
-                return attackingElement.beats.includes(
-                    defendingElement.element
-                );
-            } else {
-                return false;
-            }
-        }
-
-        async function applyCaptures(index) {
-            const cell = state.gameState.board[index];
-            const opponent = cell.player === "black" ? "white" : "black";
-            const currentPlayerStones = state.gameState.board.filter(
-                (stone) =>
-                    stone && stone.player === state.gameState.currentPlayer
-            );
-            const currentElementCount = currentPlayerStones.filter(
-                (stone) => stone.element === state.selectedElement
-            ).length;
-            if (currentElementCount < 16) {
-                state.gameState.board[index] = {
-                    player: opponent,
-                    element: state.selectedElement,
-                };
-                const cellDiv = gameBoard.value.querySelector(
-                    `div[data-index="${index}"]`
-                );
-                const svgPath = `/images/${opponent}-${state.selectedElement}.svg`;
-                const img = document.createElement("img");
-                img.src = svgPath;
-                console.log("Flipping stone at index:", index);
-                await flipStone(cellDiv, img);
-            } else {
-                console.log(
-                    "Not flipping stone at index:",
-                    index,
-                    " - max element count reached"
-                );
-            }
-        }
-
-        async function flipStone(cell, img) {
-            return new Promise((resolve) => {
-                const oldImg = cell.querySelector("img");
-                oldImg.style.position = "absolute";
-                img.style.position = "absolute";
-                img.style.left = "0";
-                img.style.top = "0";
-                img.style.zIndex = "2";
-                oldImg.classList.add("fade-out");
-                img.classList.add("fade-in");
-                cell.appendChild(img);
-                setTimeout(() => {
-                    cell.removeChild(oldImg);
-                    img.classList.remove("fade-in");
-                    resolve();
-                }, ANIMATION_DURATION);
-            });
         }
 
         function nextTurn() {
