@@ -42,9 +42,26 @@
         >
           <div>{{ currentPlayerTurnString }}</div>
           <div>•</div>
-          <div id="white-score">⚪️ {{ gameState.score.white }}</div>
+          <div id="white-score">{{ gameState.score.white }} ⚪️</div>
           <button id="random-game-btn" class="cursor-pointer">•</button>
           <div id="black-score">⚫️ {{ gameState.score.black }}</div>
+        </div>
+      </div>
+      <div v-if="!gameStarted">
+        <div class="text-center mb-4 space-x-4">
+          <span>Board size: </span>
+          <template v-for="size in [6, 8, 12]">
+            <input
+              type="radio"
+              :id="'size' + size + 'x' + size"
+              :value="size"
+              v-model="boardSize"
+              @change="updateBoardSize"
+            />
+            <label :for="'size' + size + 'x' + size"
+              >{{ size }}x{{ size }}</label
+            >
+          </template>
         </div>
       </div>
       <div id="board-container" class="my-4" ref="gameBoard"></div>
@@ -82,6 +99,8 @@ export default {
     const state = reactive({
       gameState: null,
       selectedElement: "fire",
+      boardSize: 8,
+      gameStarted: false,
     });
     const currentPlayerEmoji = computed(() => {
       return state.gameState.currentPlayer === "black" ? "⚫️" : "⚪️";
@@ -101,8 +120,8 @@ export default {
         gameBoard.value.style.height = `${boardSize}px`;
         gameBoard.value.style.margin = "0 auto";
         gameBoard.value.style.display = "grid";
-        gameBoard.value.style.gridTemplateColumns = "repeat(8, 1fr)";
-        gameBoard.value.style.gridTemplateRows = "repeat(8, 1fr)";
+        gameBoard.value.style.gridTemplateColumns = `repeat(${state.boardSize}, 1fr)`;
+        gameBoard.value.style.gridTemplateRows = `repeat(${state.boardSize}, 1fr)`;
         gameBoard.value.style.gridGap = "1px";
       } else {
         console.error('Element with id "board-container" not found');
@@ -115,7 +134,7 @@ export default {
         console.error("gameBoard.value is null");
         return;
       }
-      for (let i = 0; i < 64; i++) {
+      for (let i = 0; i < state.boardSize * state.boardSize; i++) {
         const cell = document.createElement("div");
         cell.classList.add(
           "bg-slate-200",
@@ -141,8 +160,34 @@ export default {
         window.innerWidth * 0.9,
         availableHeight * 0.9
       );
+      const cellSize = boardSize / state.boardSize;
       gameBoard.value.style.width = `${boardSize}px`;
       gameBoard.value.style.height = `${boardSize}px`;
+
+      // Update cell size
+      const cells = gameBoard.value.querySelectorAll(".bg-slate-200");
+      cells.forEach((cell) => {
+        cell.style.width = `${cellSize}px`;
+        cell.style.height = `${cellSize}px`;
+      });
+    }
+
+    function clearBoard() {
+      if (!gameBoard.value) {
+        console.error("gameBoard.value is null");
+        return;
+      }
+      while (gameBoard.value.firstChild) {
+        gameBoard.value.firstChild.remove();
+      }
+    }
+
+    function updateBoardSize() {
+      clearBoard();
+      createBoard();
+      createCells();
+      initGameState();
+      resizeBoard();
     }
 
     // ELEMENT SELECTORS
@@ -183,9 +228,12 @@ export default {
 
     // GAME LOGIC
     function initGameState() {
+      const totalCells = state.boardSize * state.boardSize;
+      const elementsPerPlayer = Math.floor(totalCells / 4);
+
       state.gameState = {
         currentPlayer: "black",
-        board: new Array(64).fill(null),
+        board: new Array(totalCells).fill(null),
         selectedElement: "fire",
         score: {
           black: 0,
@@ -193,16 +241,16 @@ export default {
         },
         elementCounts: {
           black: {
-            air: 16,
-            water: 16,
-            fire: 16,
-            earth: 16,
+            air: elementsPerPlayer,
+            water: elementsPerPlayer,
+            fire: elementsPerPlayer,
+            earth: elementsPerPlayer,
           },
           white: {
-            air: 16,
-            water: 16,
-            fire: 16,
-            earth: 16,
+            air: elementsPerPlayer,
+            water: elementsPerPlayer,
+            fire: elementsPerPlayer,
+            earth: elementsPerPlayer,
           },
         },
         turnIndicatorText: "black's turn (fire)",
@@ -276,6 +324,11 @@ export default {
         (cell) => cell && cell.player === "white"
       ).length;
 
+      // Start the game when black places the first stone
+      if (!state.gameStarted) {
+        state.gameStarted = true;
+      }
+
       nextTurn();
       console.log("nextTurn() called");
       logGameState();
@@ -314,6 +367,7 @@ export default {
       currentPlayerEmoji,
       currentPlayerElementCount,
       UnderBoardContent,
+      updateBoardSize,
     };
   },
 };
