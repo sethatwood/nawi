@@ -18,10 +18,10 @@ So come, join me in the world of **_nawi_**, and experience the power of the ele
 2. You both get 16 Air, Water, Fire, and Earth pieces. 💨🌊🔥🌍
 3. Take turns putting a piece on any empty cell. Black goes first. ⚫️
 4. Elements flip others like this:
-    - Air flips Water
-    - Water flips Fire
-    - Fire flips Earth
-    - Earth flips Air
+   - Air flips Water
+   - Water flips Fire
+   - Fire flips Earth
+   - Earth flips Air
 5. Placing a piece might flip nearby pieces. Keep flipping until you can't. 🤯
 6. If your piece is between two different opponent pieces, you choose what order to flip them in. Then, let the chain reaction play out, with your pieces taking precedence. 💥
 7. When your piece flips, you get it back to use again. 🔄
@@ -47,7 +47,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements 🙏
 
--   Special thanks to [OpenAI](https://www.openai.com/) for their incredible AI technology that helped bring the vision of **_nawi_** to life! 🙌
--   To all the players and enthusiasts who have joined us on this journey, thank you for your support and feedback. 🙏
+- Special thanks to [OpenAI](https://www.openai.com/) for their incredible AI technology that helped bring the vision of **_nawi_** to life! 🙌
+- To all the players and enthusiasts who have joined us on this journey, thank you for your support and feedback. 🙏
 
 May the power of the elements guide you in your journey through **_nawi_**. Let's play and have fun! 🌟🎉
