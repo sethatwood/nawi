@@ -11,35 +11,35 @@
                         @click="changeElement('air')"
                         data-element="air"
                     >
-                        💨 Air</button
-                    ><span>></span>
+                        <img src="/images/air-icon.png" width="48" /></button
+                    ><span style="font-size: 2rem">></span>
                     <button
                         class="element-btn"
                         @click="changeElement('water')"
                         data-element="water"
                     >
-                        🌊 Water</button
-                    ><span>></span>
+                        <img src="/images/water-icon.png" width="48" /></button
+                    ><span style="font-size: 2rem">></span>
                     <button
                         class="element-btn selected"
                         @click="changeElement('fire')"
                         data-element="fire"
                     >
-                        🔥 Fire
-                    </button>
+                        <img src="/images/fire-icon.png" width="48" /></button
+                    ><span style="font-size: 2rem">></span>
                     <button
                         class="element-btn"
                         @click="changeElement('earth')"
                         data-element="earth"
                     >
-                        🌍 Earth</button
-                    ><span>></span>
+                        <img src="/images/earth-icon.png" width="48" /></button
+                    ><span style="font-size: 2rem">></span>
                     <button
                         class="element-btn"
                         @click="changeElement('air')"
                         data-element="air"
                     >
-                        💨 Air
+                        <img src="/images/air-icon.png" width="48" />
                     </button>
                 </div>
             </div>
@@ -88,7 +88,6 @@ export default {
                 beats: ["air"],
             },
         };
-        const ANIMATION_DURATION = 1000;
         const gameBoard = ref(null);
         const state = reactive({
             gameState: null,
