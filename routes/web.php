@@ -35,5 +35,5 @@ Route::middleware([
 });
 
 Route::get('/play', function () {
-  return Inertia::render('Play/Board');
+  return Inertia::render('Play/Play');
 })->name('play');
