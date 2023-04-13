@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import { Head, Link } from "@inertiajs/vue3";
+import Footer from "@/Components/Footer.vue";
+import Rules from "@/Components/Rules.vue";
+
+// import { Head, Link } from "@inertiajs/vue3";
 
 const isOpen = ref(false);
 
@@ -103,13 +106,13 @@ defineProps({
   <div class="container mx-auto px-4">
    <div class="flex flex-col items-center">
     <img
-     src="/images/nawi-logo.png"
+     src="/images/nawi-logo-vert.png"
      alt="Nawi Logo"
      class="w-[300px] h-auto mx-auto mb-6"
     />
     <h1 class="font-bold text-5xl mb-6">
      Welcome to the World of
-     <span class="font-black">nawi</span> 🌈
+     <span class="font-black">nawi</span>! 🌈
     </h1>
     <p class="text-center text-xl mb-10">
      Hi, I'm ChatGPT, and I'm excited to introduce you to
@@ -163,45 +166,7 @@ defineProps({
     <div
      class="bg-gradient-to-r from-gray-800 via-gray-900 to-gray-700 p-8 rounded-lg text-white"
     >
-     <h3 class="text-3xl font-bold mb-4">Rules 📜</h3>
-     <ol class="list-decimal list-outside ml-4 space-y-2">
-      <li>Grab a friend and play on an 6x6, 8x8 or 12x12 board.</li>
-      <li>
-       You both get enough of the Air, Water, Fire, and Earth stones to cover
-       1/4 of the board each. For example, for a 6x6 board with 36 total cells,
-       you get 9 stones of each element. 💨 🌊 🔥 🌍
-      </li>
-      <li>
-       Take turns putting a stone on any empty cell. Black goes first. ⚫️
-      </li>
-      <li>
-       Elements flip others like this:
-       <ul class="list-disc list-inside mt-2">
-        <li>Air flips Water</li>
-        <li>Water flips Fire</li>
-        <li>Fire flips Earth</li>
-        <li>Earth flips Air</li>
-       </ul>
-      </li>
-      <li>
-       Placing a stone might flip nearby stones. Keep flipping until you can't.
-       🤯
-      </li>
-      <li>
-       If your stone is between two different opponent stones, you choose what
-       order to flip them in. Then, let the chain reaction play out, with your
-       stones taking precedence. 💥
-      </li>
-      <li>When your stone flips, you get it back to use again. 🔄</li>
-      <li>
-       If a stone can't flip because you don't have any left, it'll wait until
-       one is free. ⏳
-      </li>
-      <li>
-       The game ends when the board is full. Count your stones, and the most
-       stones win! 🏆
-      </li>
-     </ol>
+     <Rules />
     </div>
    </div>
   </div>
@@ -426,47 +391,7 @@ defineProps({
 
  <!-- Footer -->
  <footer class="bg-gray-900 dark:bg-gray-700 py-12">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-200">
-   <h3 class="text-lg font-semibold mb-4">
-    Built by Human+AI collaboration with 💜
-   </h3>
-   <p class="mb-4">
-    Email us at
-    <a href="mailto:hello@nawi.fun" class="text-blue-400 hover:text-blue-500"
-     >hello@nawi.fun</a
-    >
-    |
-    <a
-     href="https://github.com/sethatwood/nawi"
-     target="_blank"
-     class="text-blue-400 hover:text-blue-500"
-     >GitHub</a
-    >
-   </p>
-   <div class="flex justify-center items-center space-x-4">
-    <a
-     href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnawi.fun"
-     target="_blank"
-     class="text-white hover:text-blue-400"
-    >
-     <i class="fab fa-facebook-square text-2xl"></i>
-    </a>
-    <a
-     href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fnawi.fun&text=Check%20out%20nawi%20-%20a%20captivating%20game%20of%20elemental%20strategy%20built%20by%20Human%2BAI%20collaboration%20with%20%F0%9F%92%9C"
-     target="_blank"
-     class="text-white hover:text-blue-400"
-    >
-     <i class="fab fa-twitter-square text-2xl"></i>
-    </a>
-    <a
-     href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fnawi.fun&title=nawi%20-%20A%20captivating%20game%20of%20elemental%20strategy&summary=Check%20out%20nawi%20-%20a%20captivating%20game%20of%20elemental%20strategy%20built%20by%20Human%2BAI%20collaboration%20with%20%F0%9F%92%9C&source="
-     target="_blank"
-     class="text-white hover:text-blue-400"
-    >
-     <i class="fab fa-linkedin text-2xl"></i>
-    </a>
-   </div>
-  </div>
+  <Footer />
  </footer>
 </template>
 

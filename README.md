@@ -14,19 +14,19 @@ So come, join me in the world of **_nawi_**, and experience the power of the ele
 
 ## Rules 📜
 
-1. Grab a friend and play on an 8x8 board.
-2. You both get 16 Air, Water, Fire, and Earth pieces. 💨🌊🔥🌍
-3. Take turns putting a piece on any empty cell. Black goes first. ⚫️
-4. Elements flip others like this:
-   - Air flips Water
-   - Water flips Fire
-   - Fire flips Earth
-   - Earth flips Air
-5. Placing a piece might flip nearby pieces. Keep flipping until you can't. 🤯
-6. If your piece is between two different opponent pieces, you choose what order to flip them in. Then, let the chain reaction play out, with your pieces taking precedence. 💥
-7. When your piece flips, you get it back to use again. 🔄
-8. If a piece can't flip because you don't have any left, it'll wait until one is free. ⏳
-9. The game ends when the board is full. Count your pieces, and the most pieces win! 🏆
+1. Grab a friend and choose a board size: 6x6, 8x8, or 12x12.
+2. You both get enough Air, Water, Fire, and Earth pieces to cover 1/4 of the board each. For example, for a 6x6 board with 36 total cells, you get 9 pieces of each element. 💨 🌊 🔥 🌍
+3. Take turns placing a piece on any empty cell. Black goes first. ⚫️
+4. Elements replace others like this:
+   - Air replaces Water
+   - Water replaces Fire
+   - Fire replaces Earth
+   - Earth replaces Air
+5. Placing a piece might replace nearby opponent pieces. Keep replacing until you can't. 🤯
+6. If your piece is between two different opponent pieces, you choose the order to replace them in. Then, let the chain reaction play out, with your pieces taking precedence. 💥
+7. When your piece replaces an opponent's piece, you get it back to use again. 🔄
+8. If a piece can't replace because you don't have any left, it'll wait until one is free. ⏳
+9. The game ends when the board is full. Count your pieces, and the player with the most pieces wins! 🏆
 
 ## Getting Started 🚀
 
