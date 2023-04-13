@@ -107,6 +107,19 @@ export default {
   const currentPlayerEmoji = computed(() => {
    return state.gameState.currentPlayer === "black" ? "⚫️" : "⚪️";
   });
+  const pulsingPieces = ref([]);
+  const hasPulsingPieces = computed(() => pulsingPieces.value.length > 0);
+  const addPulseClass = (cell) => {
+   cell.classList.add("pulse");
+   pulsingPieces.value.push(cell);
+  };
+  const currentPlayer = computed(() => {
+   if (hasPulsingPieces.value) {
+    return pulsingPieces.value[0].dataset.player;
+   } else {
+    return turns.value % 2 === 0 ? "X" : "O";
+   }
+  });
 
   // BOARD RENDERING AND RESIZING
   async function createBoard() {
@@ -215,6 +228,9 @@ export default {
    const name =
     state.gameState.currentPlayer.charAt(0).toUpperCase() +
     state.gameState.currentPlayer.slice(1);
+   if (hasPulsingPieces.value) {
+    return `Waiting for ${name}`;
+   }
    return `${symbol} ${name} to Play (${
     state.selectedElement.charAt(0).toUpperCase() +
     state.selectedElement.slice(1)
@@ -324,14 +340,66 @@ export default {
     state.gameStarted = true;
    }
 
+   identifyThreatenedPieces();
+
    nextTurn();
    console.log("nextTurn() called");
    logGameState();
   }
 
+  function identifyThreatenedPieces() {
+   const directions = [
+    { row: -1, col: 0 },
+    { row: 0, col: 1 },
+    { row: 1, col: 0 },
+    { row: 0, col: -1 },
+   ];
+
+   // First, remove the 'pulse' class from all cells
+   gameBoard.value.querySelectorAll(".pulse").forEach((cell) => {
+    cell.classList.remove("pulse");
+   });
+
+   for (let index = 0; index < state.boardSize * state.boardSize; index++) {
+    const row = Math.floor(index / state.boardSize);
+    const col = index % state.boardSize;
+    const currentCell = state.gameState.board[index];
+
+    if (!currentCell) continue;
+
+    for (const direction of directions) {
+     const newRow = row + direction.row;
+     const newCol = col + direction.col;
+
+     if (
+      newRow >= 0 &&
+      newRow < state.boardSize &&
+      newCol >= 0 &&
+      newCol < state.boardSize
+     ) {
+      const adjacentIndex = newRow * state.boardSize + newCol;
+      const adjacentCell = state.gameState.board[adjacentIndex];
+
+      if (
+       adjacentCell &&
+       currentCell.player !== adjacentCell.player &&
+       ELEMENTS[adjacentCell.element].beats.includes(currentCell.element)
+      ) {
+       const cellElement = gameBoard.value.querySelector(
+        `[data-index="${index}"]`
+       );
+       cellElement.classList.add("pulse");
+      }
+     }
+    }
+   }
+  }
+
   function nextTurn() {
-   state.gameState.currentPlayer =
-    state.gameState.currentPlayer === "black" ? "white" : "black";
+   if (!hasPulsingPieces.value) {
+    state.gameState.currentPlayer =
+     state.gameState.currentPlayer === "black" ? "white" : "black";
+   }
    state.gameState.turnIndicatorText = `${state.gameState.currentPlayer}'s turn (${state.gameState.selectedElement})`;
   }
 
@@ -362,6 +430,10 @@ export default {
    currentPlayerEmoji,
    currentPlayerElementCount,
    updateBoardSize,
+   pulsingPieces,
+   addPulseClass,
+   hasPulsingPieces,
+   currentPlayer,
    Rules,
    Footer,
   };
@@ -408,6 +480,23 @@ body {
 }
 :deep(.fade-out) {
  animation: fade-out 1s forwards;
+}
+:deep(.pulse) {
+ animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+ 0% {
+  transform: scale(1);
+  opacity: 1;
+ }
+ 50% {
+  transform: scale(1.1);
+  opacity: 0.5;
+ }
+ 100% {
+  transform: scale(1);
+  opacity: 1;
+ }
 }
 @keyframes fade-in {
  0% {
