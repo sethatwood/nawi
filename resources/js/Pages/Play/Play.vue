@@ -103,6 +103,7 @@ export default {
    selectedElement: "fire",
    boardSize: 8,
    gameStarted: false,
+   pulsingPieces: [],
   });
   const currentPlayerEmoji = computed(() => {
    return state.gameState.currentPlayer === "black" ? "⚫️" : "⚪️";
@@ -112,6 +113,8 @@ export default {
   const addPulseClass = (cell) => {
    cell.classList.add("pulse");
    pulsingPieces.value.push(cell);
+   console.log("addPulseClass", pulsingPieces.value);
+   state.pulsingPieces.push(pulsingPieces.value);
   };
   const currentPlayer = computed(() => {
    if (hasPulsingPieces.value) {
@@ -272,14 +275,32 @@ export default {
 
   function logGameState() {
    console.log("---- Game State ----");
+   console.log("Raw State Object:", state);
+   console.log("Raw GameState Object:", state.gameState);
+   console.log("Board Size:", state.boardSize);
    console.log("Current Player:", state.gameState.currentPlayer);
+   console.log("Current Player Emoji:", currentPlayerEmoji.value);
    console.log("Selected Element:", state.selectedElement);
-   console.log("Score:", state.gameState.score);
+   console.log(
+    "Score (Black, White):",
+    state.gameState.score.black,
+    state.gameState.score.white
+   );
+   console.log(
+    "Current Player's Element Counts:",
+    state.gameState.elementCounts[state.gameState.currentPlayer]
+   );
+   console.log(
+    "Pulsing Pieces:",
+    state.pulsingPieces
+     ? state.pulsingPieces.map((cell) => cell.dataset.index).join(", ")
+     : ""
+   );
    console.log("Board:");
-   for (let i = 0; i < 8; i++) {
+   for (let i = 0; i < state.boardSize; i++) {
     let row = [];
-    for (let j = 0; j < 8; j++) {
-     row.push(state.gameState.board[i * 8 + j]);
+    for (let j = 0; j < state.boardSize; j++) {
+     row.push(state.gameState.board[i * state.boardSize + j]);
     }
     console.log(
      `r${i + 1} |` +
@@ -342,8 +363,15 @@ export default {
 
    identifyThreatenedPieces();
 
-   nextTurn();
-   console.log("nextTurn() called");
+   if (!hasPulsingPieces.value) {
+    nextTurn();
+    console.log("nextTurn() called");
+   } else {
+    state.gameState.turnIndicatorText = `Waiting for ${
+     state.gameState.currentPlayer.charAt(0).toUpperCase() +
+     state.gameState.currentPlayer.slice(1)
+    }`;
+   }
    logGameState();
   }
 
@@ -389,6 +417,7 @@ export default {
         `[data-index="${index}"]`
        );
        cellElement.classList.add("pulse");
+       state.pulsingPieces.push(cellElement);
       }
      }
     }
