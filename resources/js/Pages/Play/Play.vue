@@ -332,6 +332,12 @@ export default {
     return;
    }
 
+   // Check if there are pulsing pieces on the board
+   if (hasPulsingPieces.value) {
+    alert("Cannot place a piece while there are pulsing pieces on the board.");
+    return;
+   }
+
    state.gameState.board[index] = {
     player: state.gameState.currentPlayer,
     element: state.selectedElement,
