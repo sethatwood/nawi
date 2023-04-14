@@ -103,7 +103,6 @@ export default {
    selectedElement: "fire",
    boardSize: 8,
    gameStarted: false,
-   pulsingPieces: [],
   });
   const currentPlayerEmoji = computed(() => {
    return state.gameState.currentPlayer === "black" ? "⚫️" : "⚪️";
@@ -114,7 +113,7 @@ export default {
    cell.classList.add("pulse");
    pulsingPieces.value.push(cell);
    console.log("addPulseClass", pulsingPieces.value);
-   state.pulsingPieces.push(pulsingPieces.value);
+   pulsingPieces.value.push(cell);
   };
   const currentPlayer = computed(() => {
    if (hasPulsingPieces.value) {
@@ -417,7 +416,7 @@ export default {
         `[data-index="${index}"]`
        );
        cellElement.classList.add("pulse");
-       state.pulsingPieces.push(cellElement);
+       pulsingPieces.value.push(cellElement);
       }
      }
     }
