@@ -516,16 +516,16 @@ body {
  animation: fade-out 1s forwards;
 }
 :deep(.pulse) {
- animation: pulse 1.5s infinite;
+ animation: pulse 3s infinite;
 }
 @keyframes pulse {
  0% {
   transform: scale(1);
   opacity: 1;
  }
- 50% {
-  transform: scale(1.1);
-  opacity: 0.5;
+ 25% {
+  transform: scale(0.8);
+  opacity: 0.618;
  }
  100% {
   transform: scale(1);
