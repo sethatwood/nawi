@@ -315,26 +315,69 @@ export default {
   }
 
   async function handleCellClick(event) {
-   console.log("Cell clicked:", event.target.dataset.index);
-   logGameState();
-   const index = parseInt(event.target.dataset.index);
+   // Create a new variable targetElement and assign it the value of event.target
+   let targetElement = event.target;
 
-   // Check if the cell is already occupied
-   if (state.gameState.board[index] !== null) {
+   console.log("Event target class list:", targetElement.classList);
+   console.log("Cell clicked:", targetElement.dataset.index);
+   logGameState();
+   const index = parseInt(targetElement.dataset.index);
+
+   // Check if the targetElement is an img element, and if so, update targetElement to be the parent element (the wrapper div)
+   if (targetElement.tagName.toLowerCase() === "img") {
+    targetElement = targetElement.parentElement;
+   }
+
+   // Check if the cell is already occupied and not pulsing
+   if (
+    state.gameState.board[index] !== null &&
+    !targetElement.classList.contains("pulse")
+   ) {
+    console.log("Cell already occupied");
     alert("This cell is already occupied. Please select an empty cell.");
     return;
    }
 
    if (currentPlayerElementCount(state.selectedElement) === 0) {
+    console.log(`No more ${state.selectedElement} elements left`);
     alert(
      `You have no more ${state.selectedElement} elements left. Please choose a different element.`
     );
     return;
    }
 
-   // Check if there are pulsing pieces on the board
-   if (hasPulsingPieces.value) {
-    alert("Cannot place a piece while there are pulsing pieces on the board.");
+   // Check if the cell is pulsing
+   if (targetElement.classList.contains("pulse")) {
+    console.log("Cell is pulsing");
+    const index = parseInt(targetElement.dataset.index);
+
+    // Find the threatening piece
+    const threateningIndex = findThreateningPieceIndex(index);
+    console.log("Threatening piece index:", threateningIndex);
+
+    if (threateningIndex !== -1) {
+     // Replace the pulsing piece with the threatening piece
+     state.gameState.board[index] = state.gameState.board[threateningIndex];
+     targetElement.innerHTML = "";
+
+     const svgPath = `/images/${state.gameState.board[threateningIndex].player}-${state.gameState.board[threateningIndex].element}.svg`;
+     const img = document.createElement("img");
+     img.src = svgPath;
+     targetElement.appendChild(img);
+
+     // Remove the 'pulse' class if it's still there
+     targetElement.classList.remove("pulse");
+    }
+
+    // Re-identify threatened pieces
+    identifyThreatenedPieces();
+
+    // Check if there are no more pulsing pieces and continue with the next turn
+    if (!hasPulsingPieces.value) {
+     console.log("No more pulsing pieces, calling nextTurn()");
+     nextTurn();
+    }
+
     return;
    }
 
@@ -349,10 +392,10 @@ export default {
    const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
    const img = document.createElement("img");
    img.src = svgPath;
-   event.target.appendChild(img);
+   targetElement.appendChild(img);
 
    // Add the occupied cell style
-   event.target.classList.add("cell-occupied");
+   targetElement.classList.add("cell-occupied");
 
    state.gameState.score.black = state.gameState.board.filter(
     (cell) => cell && cell.player === "black"
@@ -363,15 +406,17 @@ export default {
 
    // Start the game when black places the first stone
    if (!state.gameStarted) {
+    console.log("Game started");
     state.gameStarted = true;
    }
 
    identifyThreatenedPieces();
 
    if (!hasPulsingPieces.value) {
+    console.log("No pulsing pieces, calling nextTurn()");
     nextTurn();
-    console.log("nextTurn() called");
    } else {
+    console.log("There are pulsing pieces");
     state.gameState.turnIndicatorText = `Waiting for ${
      state.gameState.currentPlayer.charAt(0).toUpperCase() +
      state.gameState.currentPlayer.slice(1)
@@ -427,6 +472,43 @@ export default {
      }
     }
    }
+  }
+
+  function findThreateningPieceIndex(index) {
+   const row = Math.floor(index / state.boardSize);
+   const col = index % state.boardSize;
+   const currentCell = state.gameState.board[index];
+   const directions = [
+    { row: -1, col: 0 },
+    { row: 0, col: 1 },
+    { row: 1, col: 0 },
+    { row: 0, col: -1 },
+   ];
+
+   for (const direction of directions) {
+    const newRow = row + direction.row;
+    const newCol = col + direction.col;
+
+    if (
+     newRow >= 0 &&
+     newRow < state.boardSize &&
+     newCol >= 0 &&
+     newCol < state.boardSize
+    ) {
+     const adjacentIndex = newRow * state.boardSize + newCol;
+     const adjacentCell = state.gameState.board[adjacentIndex];
+
+     if (
+      adjacentCell &&
+      currentCell.player !== adjacentCell.player &&
+      ELEMENTS[adjacentCell.element].beats.includes(currentCell.element)
+     ) {
+      return adjacentIndex;
+     }
+    }
+   }
+
+   return -1;
   }
 
   function nextTurn() {
