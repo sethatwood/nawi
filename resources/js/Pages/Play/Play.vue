@@ -74,6 +74,7 @@
 <script>
 import Rules from "@/Components/Rules.vue";
 import Footer from "@/Components/Footer.vue";
+import { logGameState } from "@/Helpers/Helpers.js";
 import { ref, nextTick, onMounted, reactive, toRefs, computed } from "vue";
 
 export default {
@@ -269,54 +270,11 @@ export default {
     turnIndicatorText: "black's turn (fire)",
    };
    console.log("Game state initialized");
-   logGameState("initGameState");
-  }
-
-  function logGameState(context) {
-   console.log("logGateState() called from:", context || "unknown");
-   console.log("---- Game State ----");
-   console.log("Raw State Object:", state);
-   console.log("Raw GameState Object:", state.gameState);
-   console.log("Board Size:", state.boardSize);
-   console.log("Current Player:", state.gameState.currentPlayer);
-   console.log("Current Player Emoji:", currentPlayerEmoji.value);
-   console.log("Selected Element:", state.selectedElement);
-   console.log(
-    "Score (Black, White):",
-    state.gameState.score.black,
-    state.gameState.score.white
-   );
-   console.log(
-    "Current Player's Element Counts:",
-    state.gameState.elementCounts[state.gameState.currentPlayer]
-   );
-   console.log(
-    "Pulsing Pieces:",
-    state.pulsingPieces
-     ? state.pulsingPieces.map((cell) => cell.dataset.index).join(", ")
-     : ""
-   );
-   console.log("Board:");
-   for (let i = 0; i < state.boardSize; i++) {
-    let row = [];
-    for (let j = 0; j < state.boardSize; j++) {
-     row.push(state.gameState.board[i * state.boardSize + j]);
-    }
-    console.log(
-     `r${i + 1} |` +
-      row
-       .map((cell, index) =>
-        cell
-         ? ` c${index + 1}•${cell.player[0]}${cell.element[0]} |`
-         : ` c${index + 1}    |`
-       )
-       .join("")
-    );
-   }
+   logGameState("initGameState", state, currentPlayerEmoji);
   }
 
   async function handleCellClick(event) {
-   // logGameState("handleCellClick start"); // toggle this on/off to see the game state
+   // logGameState("handleCellClick start", state, currentPlayerEmoji);
 
    // Create a new variable targetElement and assign it the value of event.target
    let targetElement = event.target;
@@ -416,7 +374,11 @@ export default {
 
    identifyThreatenedPieces();
 
-   logGameState("handleCellClick after identifyThreatenedPieces()");
+   logGameState(
+    "handleCellClick after identifyThreatenedPieces()",
+    state,
+    currentPlayerEmoji
+   );
 
    if (!checkForPulsingPieces()) {
     console.log("No pulsing pieces, calling nextTurn()");
