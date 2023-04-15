@@ -1,7 +1,7 @@
 <template>
  <div id="welcome" class="mx-auto w-full max-w-2xl my-24">
   <h1 class="text-4xl font-bold text-center mb-6">
-   <strong>nawi</strong> 💨 🌊 🔥 🌍
+   <strong>nawi</strong> 🌪️ 🌊 🔥 🌍
   </h1>
   <h2 class="text-2xl font-bold mb-4">Rules 📜</h2>
   <ol class="list-decimal list-inside text-lg mb-4">
@@ -9,7 +9,7 @@
    <li>
     You both get enough Air, Water, Fire, and Earth pieces to cover 1/4 of the
     board each. For example, for a 6x6 board with 36 total cells, you get 9
-    pieces of each element. 💨 🌊 🔥 🌍
+    pieces of each element. 🌪️ 🌊 🔥 🌍
    </li>
    <li>Take turns placing a piece on any empty cell. Black goes first. ⚫️</li>
    <li>

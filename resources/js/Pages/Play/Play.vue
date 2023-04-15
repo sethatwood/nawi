@@ -63,7 +63,7 @@
   </div>
   <div id="welcome" class="mx-auto w-full max-w-2xl my-24">
    <h1 class="text-4xl font-bold text-center mb-6">
-    <strong>nawi</strong> 💨 🌊 🔥 🌍
+    <strong>nawi</strong> 🌪️ 🌊 🔥 🌍
    </h1>
    <Rules />
    <Footer />

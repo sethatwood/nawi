@@ -5,7 +5,7 @@
   <li>
    You both get enough Air, Water, Fire, and Earth pieces to cover 1/4 of the
    board each. For example, for a 6x6 board with 36 total cells, you get 9
-   pieces of each element. 💨 🌊 🔥 🌍
+   pieces of each element. 🌪️ 🌊 🔥 🌍
   </li>
   <li>Take turns placing a piece on any empty cell. Black goes first. ⚫️</li>
   <li>
