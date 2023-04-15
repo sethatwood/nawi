@@ -48,6 +48,15 @@ defineProps({
        Get a Physical Copy
       </a>
      </li>
+     <li>
+      <a
+       href="https://discord.gg/EXNhQzbM"
+       target="_blank"
+       class="px-4 py-1 bg-indigo-700 text-white font-semibold rounded-full hover:bg-indigo-800 transition-all duration-300"
+      >
+       <i class="fab fa-discord"></i> Join nawi on Discord!
+      </a>
+     </li>
     </ul>
    </nav>
    <div
@@ -61,6 +70,15 @@ defineProps({
     </div>
     <nav>
      <ul class="flex flex-col space-y-4 p-4">
+      <li>
+       <a
+        href="https://discord.gg/EXNhQzbM"
+        target="_blank"
+        class="px-4 py-1 bg-indigo-700 text-white font-semibold rounded-full hover:bg-indigo-800 transition-all duration-300"
+       >
+        <i class="fab fa-discord"></i> Join nawi on Discord!
+       </a>
+      </li>
       <li>
        <a
         href="#how-to-play"
@@ -101,27 +119,29 @@ defineProps({
 
  <!-- Hero Section -->
  <section
-  class="bg-gradient-to-r from-black via-gray-900 to-gray-800 py-20 text-white pt-30"
+  class="nawi-bg bg-gradient-to-r from-black via-gray-900 to-gray-800 py-20 text-white pt-30"
+  style="padding-top: calc(5rem + 1rem)"
  >
   <div class="container mx-auto px-4">
    <div class="flex flex-col items-center">
     <img
      src="/images/nawi-logo-vert.png"
      alt="Nawi Logo"
-     class="w-[300px] h-auto mx-auto mb-6"
+     class="w-[300px] h-auto mx-auto mb-6 shadow-md"
     />
-    <h1 class="font-bold text-5xl mb-6">
-     Welcome to the World of
-     <span class="font-black">nawi</span>! 🌈
+    <h1 class="font-bold text-5xl mb-6 shadow-lg">
+     Welcome to the World of nawi! 🌈
     </h1>
-    <p class="text-center text-xl mb-10">
+    <p
+     class="text-center text-xl mb-10 bg-black bg-opacity-50 p-2 rounded-lg shadow-md"
+    >
      Hi, I'm ChatGPT, and I'm excited to introduce you to
      <span class="font-black">nawi</span> - a captivating game of elemental
      strategy! 🎉
     </p>
     <a
      href="#how-to-play"
-     class="bg-white text-indigo-700 font-semibold py-2 px-8 rounded-full hover:bg-indigo-200 transition-all duration-300"
+     class="bg-white text-indigo-700 font-semibold py-2 px-8 rounded-full hover:bg-indigo-200 transition-all duration-300 shadow-md"
     >
      Discover How to Play
     </a>
@@ -149,8 +169,8 @@ defineProps({
       time.
      </p>
      <p>
-      As players compete to control the most territory on the game board, they'll
-      experience the magic of
+      As players compete to control the most territory on the game board,
+      they'll experience the magic of
       <span class="font-black">nawi</span>'s elemental interactions. 🌟 The
       game's rules are simple yet challenging, with each element flipping others
       in a specific pattern. The strategic placement of each stone can lead to
@@ -206,16 +226,13 @@ defineProps({
     <span class="font-black">nawi</span> offers.
    </p>
    <div class="relative w-full max-w-2xl mx-auto">
-    <div class="w-full h-0 pb-9/16 relative">
-     <iframe
-      width="560"
-      height="315"
-      src="https://www.youtube.com/embed/4Fowg6TgQXo"
-      title="YouTube video player"
-      frameborder="0"
-      allowfullscreen
-     ></iframe>
-    </div>
+    <video
+     width="560"
+     height="315"
+     src="https://placehold.co/1920x1080.mp4"
+     controls
+     class="absolute top-0 left-0 object-cover"
+    ></video>
    </div>
   </div>
  </section>
@@ -395,4 +412,13 @@ defineProps({
  </footer>
 </template>
 
-<style></style>
+<style>
+.nawi-bg {
+ background-image: url("/images/elemental.jpg");
+ background-position: center;
+ background-repeat: no-repeat;
+ background-size: cover;
+ position: relative;
+ top: 1em;
+}
+</style>
