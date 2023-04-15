@@ -269,10 +269,11 @@ export default {
     turnIndicatorText: "black's turn (fire)",
    };
    console.log("Game state initialized");
-   logGameState();
+   logGameState("initGameState");
   }
 
-  function logGameState() {
+  function logGameState(context) {
+   console.log("logGateState() called from:", context || "unknown");
    console.log("---- Game State ----");
    console.log("Raw State Object:", state);
    console.log("Raw GameState Object:", state.gameState);
@@ -315,15 +316,18 @@ export default {
   }
 
   async function handleCellClick(event) {
+   // logGameState("handleCellClick start"); // toggle this on/off to see the game state
+
    // Create a new variable targetElement and assign it the value of event.target
    let targetElement = event.target;
 
    console.log("Event target class list:", targetElement.classList);
    console.log("Cell clicked:", targetElement.dataset.index);
-   logGameState();
+   // in the console at the start of the handleCellClick function
    const index = parseInt(targetElement.dataset.index);
 
-   // Check if the targetElement is an img element, and if so, update targetElement to be the parent element (the wrapper div)
+   // Check if the targetElement is an img element, and if so,
+   // update targetElement to be the parent element (the wrapper div)
    if (targetElement.tagName.toLowerCase() === "img") {
     targetElement = targetElement.parentElement;
    }
@@ -373,7 +377,7 @@ export default {
     identifyThreatenedPieces();
 
     // Check if there are no more pulsing pieces and continue with the next turn
-    if (!hasPulsingPieces.value) {
+    if (!checkForPulsingPieces()) {
      console.log("No more pulsing pieces, calling nextTurn()");
      nextTurn();
     }
@@ -412,7 +416,9 @@ export default {
 
    identifyThreatenedPieces();
 
-   if (!hasPulsingPieces.value) {
+   logGameState("handleCellClick after identifyThreatenedPieces()");
+
+   if (!checkForPulsingPieces()) {
     console.log("No pulsing pieces, calling nextTurn()");
     nextTurn();
    } else {
@@ -422,7 +428,12 @@ export default {
      state.gameState.currentPlayer.slice(1)
     }`;
    }
-   logGameState();
+  }
+
+  function checkForPulsingPieces() {
+   return Array.from(document.querySelectorAll(".cell")).some((cell) =>
+    cell.classList.contains("pulse")
+   );
   }
 
   function identifyThreatenedPieces() {
@@ -512,9 +523,10 @@ export default {
   }
 
   function nextTurn() {
-   if (!hasPulsingPieces.value) {
+   if (!checkForPulsingPieces()) {
     state.gameState.currentPlayer =
      state.gameState.currentPlayer === "black" ? "white" : "black";
+    console.log("current player is now: ", state.gameState.currentPlayer);
    }
    state.gameState.turnIndicatorText = `${state.gameState.currentPlayer}'s turn (${state.gameState.selectedElement})`;
   }
