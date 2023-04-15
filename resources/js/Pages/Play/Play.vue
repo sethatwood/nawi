@@ -79,7 +79,6 @@ import { ref, nextTick, onMounted, reactive, toRefs, computed } from "vue";
 
 export default {
  setup() {
-  // CONSTANTS
   const ELEMENTS = {
    air: {
     element: "air",
@@ -123,7 +122,6 @@ export default {
    }
   });
 
-  // BOARD RENDERING AND RESIZING
   async function createBoard() {
    await nextTick();
    const container = document.getElementById("board-container");
@@ -178,7 +176,6 @@ export default {
    gameBoard.value.style.width = `${boardSize}px`;
    gameBoard.value.style.height = `${boardSize}px`;
 
-   // Update cell size
    const cells = gameBoard.value.querySelectorAll(".bg-slate-200");
    cells.forEach((cell) => {
     cell.style.width = `${cellSize}px`;
@@ -204,7 +201,6 @@ export default {
    resizeBoard();
   }
 
-  // ELEMENT SELECTORS
   const elementsForLoop = computed(() => {
    const elementsArray = Object.values(ELEMENTS);
    elementsArray.splice(4, 0, elementsArray[0]);
@@ -240,7 +236,6 @@ export default {
    })`;
   });
 
-  // GAME LOGIC
   function initGameState() {
    const totalCells = state.boardSize * state.boardSize;
    const elementsPerPlayer = Math.floor(totalCells / 4);
@@ -275,22 +270,13 @@ export default {
 
   async function handleCellClick(event) {
    // logGameState("handleCellClick start", state, currentPlayerEmoji);
-
-   // Create a new variable targetElement and assign it the value of event.target
    let targetElement = event.target;
-
    console.log("Event target class list:", targetElement.classList);
    console.log("Cell clicked:", targetElement.dataset.index);
-   // in the console at the start of the handleCellClick function
    const index = parseInt(targetElement.dataset.index);
-
-   // Check if the targetElement is an img element, and if so,
-   // update targetElement to be the parent element (the wrapper div)
    if (targetElement.tagName.toLowerCase() === "img") {
     targetElement = targetElement.parentElement;
    }
-
-   // Check if the cell is already occupied and not pulsing
    if (
     state.gameState.board[index] !== null &&
     !targetElement.classList.contains("pulse")
@@ -299,7 +285,6 @@ export default {
     alert("This cell is already occupied. Please select an empty cell.");
     return;
    }
-
    if (currentPlayerElementCount(state.selectedElement) === 0) {
     console.log(`No more ${state.selectedElement} elements left`);
     alert(
@@ -307,47 +292,30 @@ export default {
     );
     return;
    }
-
-   // Check if the cell is pulsing
    if (targetElement.classList.contains("pulse")) {
     console.log("Cell is pulsing");
     const index = parseInt(targetElement.dataset.index);
-
-    // Find the threatening piece
     const threateningIndex = findThreateningPieceIndex(index);
     console.log("Threatening piece index:", threateningIndex);
-
     if (threateningIndex !== -1) {
-     // Replace the pulsing piece with the threatening piece
      state.gameState.board[index] = state.gameState.board[threateningIndex];
      targetElement.innerHTML = "";
-
      const svgPath = `/images/${state.gameState.board[threateningIndex].player}-${state.gameState.board[threateningIndex].element}.svg`;
      const img = document.createElement("img");
      img.src = svgPath;
      targetElement.appendChild(img);
-
-     // Remove the 'pulse' class if it's still there
      targetElement.classList.remove("pulse");
-
-     // Remove the pulsing cell from the pulsingPieces.value array
      pulsingPieces.value = pulsingPieces.value.filter(
       (cell) => cell !== targetElement
      );
     }
-
-    // Re-identify threatened pieces
     identifyThreatenedPieces();
-
-    // Check if there are no more pulsing pieces and continue with the next turn
     if (!checkForPulsingPieces()) {
      console.log("No more pulsing pieces, calling nextTurn()");
      nextTurn();
     }
-
     return;
    }
-
    state.gameState.board[index] = {
     player: state.gameState.currentPlayer,
     element: state.selectedElement,
@@ -355,40 +323,29 @@ export default {
    state.gameState.elementCounts[state.gameState.currentPlayer][
     state.selectedElement
    ]--;
-
    const svgPath = `/images/${state.gameState.currentPlayer}-${state.selectedElement}.svg`;
    const img = document.createElement("img");
    img.src = svgPath;
    targetElement.appendChild(img);
-
-   // Add the occupied cell style
    targetElement.classList.add("cell-occupied");
-
    state.gameState.score.black = state.gameState.board.filter(
     (cell) => cell && cell.player === "black"
    ).length;
    state.gameState.score.white = state.gameState.board.filter(
     (cell) => cell && cell.player === "white"
    ).length;
-
-   // Start the game when black places the first stone
    if (!state.gameStarted) {
     console.log("Game started");
     state.gameStarted = true;
    }
-
    identifyThreatenedPieces();
-
    logGameState(
     "handleCellClick after identifyThreatenedPieces()",
     state,
     currentPlayerEmoji
    );
-
    const checkForPulsingPiecesResult = checkForPulsingPieces();
-
    console.log("checkForPulsingPiecesResult:", checkForPulsingPiecesResult);
-
    if (!checkForPulsingPiecesResult) {
     console.log("No pulsing pieces, calling nextTurn()");
     nextTurn();
@@ -414,28 +371,20 @@ export default {
     { row: 1, col: 0 },
     { row: 0, col: -1 },
    ];
-
-   // First, remove the 'pulse' class from all cells
    gameBoard.value.querySelectorAll(".pulse").forEach((cell) => {
     cell.classList.remove("pulse");
    });
-
-   // we must also clear the pulsingPieces.value if it's not empty
    if (pulsingPieces.value.length > 0) {
     pulsingPieces.value = [];
    }
-
    for (let index = 0; index < state.boardSize * state.boardSize; index++) {
     const row = Math.floor(index / state.boardSize);
     const col = index % state.boardSize;
     const currentCell = state.gameState.board[index];
-
     if (!currentCell) continue;
-
     for (const direction of directions) {
      const newRow = row + direction.row;
      const newCol = col + direction.col;
-
      if (
       newRow >= 0 &&
       newRow < state.boardSize &&
@@ -444,7 +393,6 @@ export default {
      ) {
       const adjacentIndex = newRow * state.boardSize + newCol;
       const adjacentCell = state.gameState.board[adjacentIndex];
-
       if (
        adjacentCell &&
        currentCell.player !== adjacentCell.player &&
@@ -471,11 +419,9 @@ export default {
     { row: 1, col: 0 },
     { row: 0, col: -1 },
    ];
-
    for (const direction of directions) {
     const newRow = row + direction.row;
     const newCol = col + direction.col;
-
     if (
      newRow >= 0 &&
      newRow < state.boardSize &&
@@ -484,7 +430,6 @@ export default {
     ) {
      const adjacentIndex = newRow * state.boardSize + newCol;
      const adjacentCell = state.gameState.board[adjacentIndex];
-
      if (
       adjacentCell &&
       currentCell.player !== adjacentCell.player &&
@@ -494,7 +439,6 @@ export default {
      }
     }
    }
-
    return -1;
   }
 
