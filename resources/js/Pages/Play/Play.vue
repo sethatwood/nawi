@@ -114,7 +114,6 @@ export default {
    cell.classList.add("pulse");
    pulsingPieces.value.push(cell);
    console.log("addPulseClass", pulsingPieces.value);
-   pulsingPieces.value.push(cell);
   };
   const currentPlayer = computed(() => {
    if (hasPulsingPieces.value) {
@@ -330,6 +329,11 @@ export default {
 
      // Remove the 'pulse' class if it's still there
      targetElement.classList.remove("pulse");
+
+     // Remove the pulsing cell from the pulsingPieces.value array
+     pulsingPieces.value = pulsingPieces.value.filter(
+      (cell) => cell !== targetElement
+     );
     }
 
     // Re-identify threatened pieces
