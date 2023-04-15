@@ -149,7 +149,7 @@ defineProps({
       time.
      </p>
      <p>
-      As players compete to control the most territory on an 8x8 board, they'll
+      As players compete to control the most territory on the game board, they'll
       experience the magic of
       <span class="font-black">nawi</span>'s elemental interactions. 🌟 The
       game's rules are simple yet challenging, with each element flipping others
