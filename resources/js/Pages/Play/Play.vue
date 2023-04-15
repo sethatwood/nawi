@@ -536,14 +536,17 @@ body {
  0% {
   transform: scale(1);
   opacity: 1;
+  cursor: grabbing;
  }
  25% {
   transform: scale(0.8);
   opacity: 0.618;
+  cursor: grab;
  }
  100% {
   transform: scale(1);
   opacity: 1;
+  cursor: grabbing;
  }
 }
 @keyframes fade-in {

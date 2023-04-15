@@ -5,6 +5,12 @@
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+ <!-- Open Graph tags -->
+ <meta property="og:title" content="nawi 🌪️ 🌊 🔥 🌍 🌪️">
+ <meta property="og:description" content="Discover nawi, a captivating game of elemental strategy built by Human+AI collaboration with 💜. Experience the magic of Air, Water, Fire, and Earth in a unique gameplay experience.">
+ <meta property="og:image" content="https://nawi.fun/images/nawi-og-image.png">
+ <meta property="og:url" content="https://nawi.fun">
+
  <title>nawi 🌪️ 🌊 🔥 🌍 🌪️</title>
 
  <!-- Fonts -->
