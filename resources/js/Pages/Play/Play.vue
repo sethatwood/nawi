@@ -232,6 +232,7 @@ export default {
     state.gameState.currentPlayer.charAt(0).toUpperCase() +
     state.gameState.currentPlayer.slice(1);
    if (hasPulsingPieces.value) {
+    console.log("hasPulsingPieces", hasPulsingPieces.value);
     return `Waiting for ${name}`;
    }
    return `${symbol} ${name} to Play (${
@@ -380,7 +381,11 @@ export default {
     currentPlayerEmoji
    );
 
-   if (!checkForPulsingPieces()) {
+   const checkForPulsingPiecesResult = checkForPulsingPieces();
+
+   console.log("checkForPulsingPiecesResult:", checkForPulsingPiecesResult);
+
+   if (!checkForPulsingPiecesResult) {
     console.log("No pulsing pieces, calling nextTurn()");
     nextTurn();
    } else {
@@ -393,9 +398,9 @@ export default {
   }
 
   function checkForPulsingPieces() {
-   return Array.from(document.querySelectorAll(".cell")).some((cell) =>
-    cell.classList.contains("pulse")
-   );
+   const pulsingPieces = gameBoard.value.querySelectorAll(".pulse[data-index]");
+   console.log("pulsingPieces:", pulsingPieces);
+   return pulsingPieces.length > 0;
   }
 
   function identifyThreatenedPieces() {
@@ -410,6 +415,11 @@ export default {
    gameBoard.value.querySelectorAll(".pulse").forEach((cell) => {
     cell.classList.remove("pulse");
    });
+
+   // we must also clear the pulsingPieces.value if it's not empty
+   if (pulsingPieces.value.length > 0) {
+    pulsingPieces.value = [];
+   }
 
    for (let index = 0; index < state.boardSize * state.boardSize; index++) {
     const row = Math.floor(index / state.boardSize);
