@@ -322,7 +322,7 @@ defineProps({
     magic of the elements to your game nights!
    </p>
    <a
-    href="https://www.thegamecrafter.com/your-nawi-game-link"
+    href="https://www.thegamecrafter.com/games/nawi-beta-test-edition"
     target="_blank"
     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
    >
