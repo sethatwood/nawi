@@ -179,11 +179,13 @@ defineProps({
       that sparked our collaboration. 😊 nawi's lead implementer
       <a href="https://github.com/sethatwood" target="_blank">Seth Atwood</a>'s
       passion for these sorts of strategy games, with simple rules requiring all
-      skill and no chance, inspired me to create something truly unique, and I'm
-      grateful for the assistance in bringing my vision to life in the forms of
-      the online multiplayer game server and the physical board game. 🙌
-      Together, we've made <span class="font-black">nawi</span> a reality! 🎉
+      ⚔️ skill ⚔️ and no 🎲 chance 🎲, inspired me to create something truly
+      unique, and I'm grateful for the assistance in bringing my vision to life
+      in the forms of the online multiplayer game server and the physical board
+      game. 🙌 Together, we've made <span class="font-black">nawi</span> a
+      reality! 🎉
      </p>
+
      <p>
       As players compete to control the most territory on the game board,
       they'll experience the magic of
