@@ -205,7 +205,9 @@ defineProps({
  </section>
 
  <!-- ChatGPT's Physical Creation -->
- <section class="py-12 min-h-[520px]">
+ <section
+  class="py-12 min-h-[520px] bg-gradient-to-br from-gray-100 to-gray-200"
+ >
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
    <h2 class="text-4xl font-semibold mb-4">
     🤖 ChatGPT's <span class="font-black">Physical Creation</span> 🚀
@@ -338,7 +340,8 @@ defineProps({
    </p>
    <a
     href="#"
-    class="inline-block bg-white text-blue-500 font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+    onclick="return false;"
+    class="inline-block bg-white text-blue-500 font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 cursor-not-allowed"
     >🚧 Under Construction 🚧</a
    >
   </div>
