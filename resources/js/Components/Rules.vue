@@ -11,10 +11,10 @@
   <li>
    Elements replace others like this:
    <ul class="list-disc list-inside ml-6">
-    <li>Air replaces Water</li>
-    <li>Water replaces Fire</li>
-    <li>Fire replaces Earth</li>
-    <li>Earth replaces Air</li>
+    <li>Air scatters Water</li>
+    <li>Water douses Fire</li>
+    <li>Fire scorches Earth</li>
+    <li>Earth pollutes Air</li>
    </ul>
   </li>
   <li>
