@@ -275,7 +275,7 @@ defineProps({
    <div class="mb-6">
     <h4 class="text-xl font-semibold mb-2">Step #1: Purchase the game</h4>
     <a
-     href="https://www.thegamecrafter.com/nawi-beta-test-edition"
+     href="https://www.thegamecrafter.com/games/nawi-beta-test-edition"
      target="_blank"
      class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
     >
