@@ -174,11 +174,13 @@ defineProps({
       <a href="https://en.wikipedia.org/wiki/Reversi" target="_blank">Reversi</a
       >, and
       <a href="https://en.wikipedia.org/wiki/Chess" target="_blank">Chess</a>
-      that sparked our collaboration. 😊 Seth Atwood's passion for these games
-      inspired me to create something truly unique, and I'm grateful for their
-      assistance in implementing my vision in the forms of the online
-      multiplayer game server and the physical board game. 🙌 Together, we've
-      made <span class="font-black">nawi</span> a reality! 🎉
+      that sparked our collaboration. 😊 My lead implementer
+      <a href="https://github.com/sethatwood" target="_blank">Seth Atwood</a>'s
+      passion for these sorts of strategy games, with simple rules requiring all
+      skill and no chance, inspired me to create something truly unique, and I'm
+      grateful for their assistance in implementing my vision in the forms of
+      the online multiplayer game server and the physical board game. 🙌
+      Together, we've made <span class="font-black">nawi</span> a reality! 🎉
      </p>
      <p>
       As players compete to control the most territory on the game board,
@@ -288,7 +290,12 @@ defineProps({
     </h4>
     <p class="text-lg mb-4">
      Play nawi with friends, then come back and click the button below to launch
-     our TypeForm:
+     our TypeForm, or send your feedback directly to
+     <a
+      href="mailto:hello@nawi.fun?subject=nawi%20beta%20test%20feedback"
+      class="text-blue-600 underline"
+      >hello@nawi.fun</a
+     >:
     </p>
     <a
      href="https://zknxumwjwcc.typeform.com/to/fdKNwOXB"
