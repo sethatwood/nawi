@@ -282,6 +282,17 @@ defineProps({
      💸 Order "nawi beta test edition" for $15.99 at cost from
      TheGameCrafter.com 💸
     </a>
+    <p class="text-lg mt-4">
+     Feeling generous? 😇💖 Grab the
+     <a
+      href="https://www.thegamecrafter.com/games/nawi-deluxe-edition"
+      target="_blank"
+      class="text-blue-600 underline"
+      >deluxe edition</a
+     >
+     and contribute directly to server, development, and community-building
+     costs, like sponsoring nawi sets for schools and clubs! 🏫🚀🌟
+    </p>
    </div>
    <div>
     <h4 class="text-xl font-semibold mb-2">
