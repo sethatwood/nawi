@@ -23,8 +23,8 @@
   </li>
   <li>
    If your piece is between two or more different opponent pieces, you choose
-   the order to replace them in. Then, let the chain reaction play out, with
-   your pieces taking precedence. 💥
+   the order to replace them in. Then, let the chain reaction play out, , one
+   replacement at a time. 💥
   </li>
   <li>
    When your piece replaces an opponent's piece, you get it back to use again.

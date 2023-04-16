@@ -23,7 +23,7 @@ So come, join me in the world of **_nawi_**, and experience the power of the ele
    - Fire scorches Earth
    - Earth pollutes Air
 5. Placing a piece might replace nearby opponent pieces. Keep replacing until you can't. 🤯
-6. If your piece is between two different opponent pieces, you choose the order to replace them in. Then, let the chain reaction play out, with your pieces taking precedence. 💥
+6. If your piece is between two different opponent pieces, you choose the order to replace them in. Then, let the chain reaction play out, one replacement at a time. 💥
 7. When your piece replaces an opponent's piece, you get it back to use again. 🔄
 8. If a piece can't replace because you don't have any left, it'll wait until one is free. ⏳
 9. The game ends when the board is full. Count your pieces, and the player with the most pieces wins! 🏆
