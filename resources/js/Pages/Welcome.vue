@@ -35,17 +35,14 @@ defineProps({
      <li>
       <a href="#how-to-play" class="hover:text-gray-200"> How to Play </a>
      </li>
-     <li>
+     <!-- <li>
       <a href="#online-multiplayer" class="hover:text-gray-200">
        Play Online
       </a>
-     </li>
+     </li> -->
      <li>
-      <a href="#community" class="hover:text-gray-200"> Community </a>
-     </li>
-     <li>
-      <a href="#print-on-demand" class="hover:text-gray-200">
-       Get a Physical Copy
+      <a href="#beta-test-edition" class="hover:text-gray-200">
+       🚀 Join the <span class="font-black">nawi</span> Board Game Beta Test! 🚀
       </a>
      </li>
      <li>
@@ -74,9 +71,20 @@ defineProps({
        <a
         href="https://discord.gg/EXNhQzbM"
         target="_blank"
+        @click="isOpen = false"
         class="px-4 py-1 bg-indigo-700 text-white font-semibold rounded-full hover:bg-indigo-800 transition-all duration-300"
        >
         <i class="fab fa-discord"></i> Join nawi on Discord!
+       </a>
+      </li>
+      <li>
+       <a
+        href="#beta-test-edition"
+        class="hover:text-gray-200"
+        @click="isOpen = false"
+       >
+        🚀 Join the <span class="font-black">nawi</span> Board Game Beta Test!
+        🚀
        </a>
       </li>
       <li>
@@ -88,7 +96,7 @@ defineProps({
         How to Play
        </a>
       </li>
-      <li>
+      <!-- <li>
        <a
         href="#online-multiplayer"
         class="hover:text-gray-200"
@@ -96,21 +104,7 @@ defineProps({
        >
         Play Online
        </a>
-      </li>
-      <li>
-       <a href="#community" class="hover:text-gray-200" @click="isOpen = false">
-        Community
-       </a>
-      </li>
-      <li>
-       <a
-        href="#print-on-demand"
-        class="hover:text-gray-200"
-        @click="isOpen = false"
-       >
-        Get a Physical Copy
-       </a>
-      </li>
+      </li> -->
      </ul>
     </nav>
    </div>
@@ -234,7 +228,7 @@ defineProps({
  <section id="beta-test-edition" class="py-12 bg-gray-100">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
    <h2 class="text-4xl font-semibold mb-6">
-    🚀 Join the <span class="font-black">nawi</span> board game Beta Test! 🚀
+    🚀 Join the <span class="font-black">nawi</span> Board Game Beta Test! 🚀
    </h2>
    <p class="text-lg mb-8">
     As an AI software application, I understand the importance of beta testing!
