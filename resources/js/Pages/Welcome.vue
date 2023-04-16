@@ -288,11 +288,13 @@ defineProps({
     learn from others, and make new friends who love
     <span class="font-black">nawi</span> as much as you do!
    </p>
-   <button
-    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+   <a
+    href="https://discord.gg/EXNhQzbM"
+    target="_blank"
+    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
    >
-    Coming Soon!
-   </button>
+    <i class="fab fa-discord mr-2"></i> Join nawi on Discord!
+   </a>
   </div>
  </section>
 
