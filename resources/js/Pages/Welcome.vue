@@ -290,8 +290,16 @@ defineProps({
       class="text-blue-600 underline"
       >deluxe edition</a
      >
-     and contribute directly to server, development, and community-building
-     costs, like sponsoring nawi sets for schools and clubs! 🏫🚀🌟
+     🌟👑 and contribute directly to server, development, and community-building
+     costs, like sponsoring nawi sets for schools and clubs! 🏫🚀🌟 Or, choose
+     the more affordable
+     <a
+      href="https://www.thegamecrafter.com/games/nawi-unboxed-edition"
+      target="_blank"
+      class="text-blue-600 underline"
+      >nawi unboxed</a
+     >
+     edition! 🥡😄
     </p>
    </div>
    <div>
