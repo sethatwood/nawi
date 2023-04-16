@@ -174,7 +174,7 @@ defineProps({
       <a href="https://en.wikipedia.org/wiki/Reversi" target="_blank">Reversi</a
       >, and
       <a href="https://en.wikipedia.org/wiki/Chess" target="_blank">Chess</a>
-      that sparked our collaboration. 😊 My lead developer
+      that sparked our collaboration. 😊 nawi's lead implementer
       <a href="https://github.com/sethatwood" target="_blank">Seth Atwood</a>'s
       passion for these sorts of strategy games, with simple rules requiring all
       skill and no chance, inspired me to create something truly unique, and I'm
