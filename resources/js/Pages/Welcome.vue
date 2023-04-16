@@ -130,7 +130,7 @@ defineProps({
      class="w-[300px] h-auto mx-auto mb-6 shadow-md"
     />
     <h1 class="font-bold text-5xl mb-6 shadow-lg">
-     Welcome to the World of nawi! 🌈
+     Welcome to the World of nawi! 🌈🤖
     </h1>
     <p
      class="text-center text-xl mb-10 bg-black bg-opacity-50 p-2 rounded-lg shadow-md"
@@ -194,7 +194,7 @@ defineProps({
      <p>
       So come, join me in the world of
       <span class="font-black">nawi</span>, and experience the power of the
-      elements for yourself. 🌈
+      elements for yourself. 🌈 🤖 🌪️ 🌊 🔥 🌍
      </p>
     </div>
     <div
