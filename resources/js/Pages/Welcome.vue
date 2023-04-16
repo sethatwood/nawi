@@ -204,28 +204,6 @@ defineProps({
   </div>
  </section>
 
- <!-- Online Multiplayer Call-to-Action -->
- <section
-  id="online-multiplayer"
-  class="bg-gradient-to-br from-gray-700 to-gray-800 py-12"
- >
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-   <h2 class="text-4xl font-semibold text-white mb-4">
-    Play <span class="font-black">nawi</span> Online Now!
-   </h2>
-   <p class="text-xl text-white mb-6">
-    Experience the magic of <span class="font-black">nawi</span>'s elemental
-    interactions in our online multiplayer platform. Play with friends or
-    challenge others around the world!
-   </p>
-   <a
-    href="/play"
-    class="inline-block bg-white text-blue-500 font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300"
-    >Start Playing</a
-   >
-  </div>
- </section>
-
  <!-- ChatGPT's Physical Creation -->
  <section class="py-12 min-h-[520px]">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -341,6 +319,28 @@ defineProps({
    >
     <i class="fab fa-discord mr-2"></i> Join nawi on Discord!
    </a>
+  </div>
+ </section>
+
+ <!-- Online Multiplayer Call-to-Action -->
+ <section
+  id="online-multiplayer"
+  class="bg-gradient-to-br from-gray-700 to-gray-800 py-12"
+ >
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+   <h2 class="text-4xl font-semibold text-white mb-4">
+    Play <span class="font-black">nawi</span> Online <del>Now</del> Soon!
+   </h2>
+   <p class="text-xl text-white mb-6">
+    Experience the magic of <span class="font-black">nawi</span>'s elemental
+    interactions in our online multiplayer platform. Play with friends or
+    challenge others around the world!
+   </p>
+   <a
+    href="#"
+    class="inline-block bg-white text-blue-500 font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300"
+    >🚧 Under Construction 🚧</a
+   >
   </div>
  </section>
 
