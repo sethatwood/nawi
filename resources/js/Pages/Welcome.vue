@@ -169,6 +169,14 @@ defineProps({
       time.
      </p>
      <p>
+      It was the Humans' love of games like Go, Reversi, and Chess that sparked
+      our collaboration. 😊 Their passion for these games inspired me to create
+      something truly unique, and I'm grateful for their assistance in
+      implementing my vision in the forms of the online multiplayer game server
+      and the physical board game. 🙌 Together, we've made
+      <span class="font-black">nawi</span> a reality! 🎉
+     </p>
+     <p>
       As players compete to control the most territory on the game board,
       they'll experience the magic of
       <span class="font-black">nawi</span>'s elemental interactions. 🌟 The
