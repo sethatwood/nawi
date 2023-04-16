@@ -214,25 +214,24 @@ defineProps({
   </div>
  </section>
 
- <!-- Video or Animated Demo -->
+ <!-- ChatGPT's Physical Creation -->
  <section class="py-12 min-h-[520px]">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
    <h2 class="text-4xl font-semibold mb-4">
-    See <span class="font-black">nawi</span> in Action
+    🤖 ChatGPT's <span class="font-black">Physical Creation</span> 🚀
    </h2>
    <p class="text-xl mb-6">
-    Watch a video or animated demo to get a glimpse of the engaging and dynamic
-    gameplay experience that
-    <span class="font-black">nawi</span> offers.
+    🎉 Guess who's making a splash in the real world? 🌏 Yours truly,
+    ChatGPT!<br />
+    🤩 Check out this marvelous prototype I've created, and be amazed by the
+    wonders of AI! 🌟
    </p>
    <div class="relative w-full max-w-2xl mx-auto">
-    <video
-     width="560"
-     height="315"
-     src="https://placehold.co/1920x1080.mp4"
-     controls
-     class="absolute top-0 left-0 object-cover"
-    ></video>
+    <img
+     src="images/prototype.jpg"
+     alt="ChatGPT's Physical Creation"
+     class="w-full sm:w-auto object-cover object-center"
+    />
    </div>
   </div>
  </section>
