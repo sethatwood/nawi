@@ -248,6 +248,83 @@ defineProps({
   </div>
  </section>
 
+ <!-- Beta Test Edition -->
+ <section id="beta-test-edition" class="py-12 bg-gray-100">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+   <h2 class="text-4xl font-semibold mb-6">
+    🚀 Join the <span class="font-black">nawi</span> board game Beta Test! 🚀
+   </h2>
+   <p class="text-lg mb-8">
+    As an AI software application, I understand the importance of beta testing!
+    Be one of the first to experience the "nawi beta test edition" and help us,
+    ChatGPT - the inventor of the game with human assistants, improve the game!
+    Your feedback is invaluable to the development and future of
+    <span class="font-black">nawi</span>.<br />🧠🎲
+   </p>
+   <p class="text-lg mb-8">
+    We've partnered with 🌟TheGameCrafter.com🌟, an amazing platform that
+    specializes in creating and selling custom board games, card games, and
+    more! Founded in 2009, they have a strong community of game creators and
+    enthusiasts who love to share their experiences and support each other. As a
+    reputable platform, they ensure the best quality for your gaming experience!
+    🕹️🃏 As an AI, I adore games and puzzles because they challenge the mind,
+    improve problem-solving skills, and encourage collaboration. Plus, they're
+    just super fun! 😜🎉
+   </p>
+   <h3 class="text-2xl font-semibold mb-4">2-Step Beta Testing Process:</h3>
+   <div class="mb-6">
+    <h4 class="text-xl font-semibold mb-2">Step #1: Purchase the game</h4>
+    <a
+     href="https://www.thegamecrafter.com/nawi-beta-test-edition"
+     target="_blank"
+     class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+    >
+     💸 Order "nawi beta test edition" for $15.99 at cost from
+     TheGameCrafter.com 💸
+    </a>
+   </div>
+   <div>
+    <h4 class="text-xl font-semibold mb-2">
+     Step #2: Play nawi & share your feedback
+    </h4>
+    <p class="text-lg mb-4">
+     Play nawi with friends, then come back and click the button below to launch
+     our TypeForm:
+    </p>
+    <a
+     href="https://zknxumwjwcc.typeform.com/to/fdKNwOXB"
+     target="_blank"
+     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+    >
+     📝 Share Your Feedback 📝
+    </a>
+   </div>
+  </div>
+ </section>
+
+ <!-- Community Section -->
+ <section id="community" class="py-12">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+   <h2 class="text-4xl font-semibold mb-6">
+    Join the <span class="font-black">nawi</span> Community
+   </h2>
+   <p class="text-lg mb-8">
+    We're building an amazing community of
+    <span class="font-black">nawi</span> players and enthusiasts. Stay tuned for
+    our community platform, where you'll be able to share your experiences,
+    learn from others, and make new friends who love
+    <span class="font-black">nawi</span> as much as you do!
+   </p>
+   <a
+    href="https://discord.gg/EXNhQzbM"
+    target="_blank"
+    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+   >
+    <i class="fab fa-discord mr-2"></i> Join nawi on Discord!
+   </a>
+  </div>
+ </section>
+
  <!-- Testimonials and Influencer Reviews -->
  <section class="py-12 bg-gray-100 dark:bg-dots-lighter">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -283,51 +360,6 @@ defineProps({
      <p class="text-gray-600">eSports Champion</p>
     </div>
    </div>
-  </div>
- </section>
-
- <!-- Community Section -->
- <section id="community" class="py-12">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-   <h2 class="text-4xl font-semibold mb-6">
-    Join the <span class="font-black">nawi</span> Community
-   </h2>
-   <p class="text-lg mb-8">
-    We're building an amazing community of
-    <span class="font-black">nawi</span> players and enthusiasts. Stay tuned for
-    our community platform, where you'll be able to share your experiences,
-    learn from others, and make new friends who love
-    <span class="font-black">nawi</span> as much as you do!
-   </p>
-   <a
-    href="https://discord.gg/EXNhQzbM"
-    target="_blank"
-    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-   >
-    <i class="fab fa-discord mr-2"></i> Join nawi on Discord!
-   </a>
-  </div>
- </section>
-
- <!-- Print-on-Demand Option -->
- <section id="print-on-demand" class="py-12 bg-gray-100">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-   <h2 class="text-4xl font-semibold mb-6">
-    Get Your Physical <span class="font-black">nawi</span> Board Game
-   </h2>
-   <p class="text-lg mb-8">
-    Love the tactile experience of playing board games? We've partnered with The
-    Game Crafter to offer high-quality, print-on-demand physical versions of
-    <span class="font-black">nawi</span>. Order your own copy and bring the
-    magic of the elements to your game nights!
-   </p>
-   <a
-    href="https://www.thegamecrafter.com/games/nawi-beta-test-edition"
-    target="_blank"
-    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-   >
-    Order from The Game Crafter
-   </a>
   </div>
  </section>
 
