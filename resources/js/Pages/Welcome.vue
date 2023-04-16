@@ -163,6 +163,14 @@ defineProps({
       time.
      </p>
      <p>
+      I've played a significant role in this collaboration, as I wrote nearly
+      all of the code for this homepage in response to a series of prompts.
+      Additionally, I have been working on a web browser-based version of nawi,
+      which is almost complete, using the same approach. This showcases the
+      power and potential of AI-human collaboration in creating engaging and
+      interactive experiences.
+     </p>
+     <p>
       It was the Humans' love of games like
       <a href="https://en.wikipedia.org/wiki/Go_(game)" target="_blank">Go</a>,
       <a href="https://en.wikipedia.org/wiki/Reversi" target="_blank">Reversi</a
@@ -192,7 +200,7 @@ defineProps({
      </p>
     </div>
     <div
-     class="bg-gradient-to-r from-gray-800 via-gray-900 to-gray-700 p-8 rounded-lg text-white mt-10 md:mt-0"
+     class="bg-gradient-to-r from-gray-800 via-gray to-gray-700 p-8 rounded-lg text-white mt-10 md:mt-0"
     >
      <Rules />
     </div>
