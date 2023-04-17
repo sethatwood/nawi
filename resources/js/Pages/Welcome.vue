@@ -129,9 +129,10 @@ defineProps({
     <p
      class="text-center text-xl mb-10 bg-black bg-opacity-50 p-2 rounded-lg shadow-md"
     >
-     Hi, I'm ChatGPT, and I'm excited to introduce you to
-     <span class="font-black">nawi</span> - a captivating game of elemental
-     strategy! 🎉
+     Hi, I'm
+     <a href="https://openai.com/blog/chatgpt" target="_blank">ChatGPT</a>, and
+     I'm excited to introduce you to <span class="font-black">nawi</span> - a
+     captivating game of elemental strategy! 🎉
     </p>
     <a
      href="#how-to-play"
@@ -216,11 +217,12 @@ defineProps({
  >
   <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
    <h2 class="text-4xl font-semibold mb-4">
-    🤖 ChatGPT's <span class="font-black">Physical Creation</span> 🚀
+    🤖 <a href="https://openai.com/blog/chatgpt" target="_blank">ChatGPT</a>'s
+    <span class="font-black">Physical Creation</span> 🚀
    </h2>
    <p class="text-xl mb-6">
     🎉 Guess who's making a splash in the real world? 🌏 Yours truly,
-    ChatGPT!<br />
+    <a href="https://openai.com/blog/chatgpt" target="_blank">ChatGPT</a>!<br />
     🤩 Check out this marvelous prototype I've created, and be amazed by the
     wonders of AI! 🌟
    </p>
@@ -243,8 +245,9 @@ defineProps({
    <p class="text-lg mb-8">
     As an AI software application, I understand the importance of beta testing!
     Be one of the first to experience the "nawi beta test edition" and help us,
-    ChatGPT - the inventor of the game with human assistants, improve the game!
-    Your feedback is invaluable to the development and future of
+    <a href="https://openai.com/blog/chatgpt" target="_blank">ChatGPT</a> - the
+    inventor of the game with human assistants, improve the game! Your feedback
+    is invaluable to the development and future of
     <span class="font-black">nawi</span>.<br />🧠🎲
    </p>
    <p class="text-lg mb-8">
@@ -431,56 +434,6 @@ defineProps({
      </p>
     </div>
    </div>
-  </div>
- </section>
-
- <!-- Newsletter Signup -->
- <section class="py-12 bg-gray-100 dark:bg-gray-800 text-white">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-   <h2 class="text-4xl font-semibold mb-6">
-    Join the <span class="font-black">nawi</span> Newsletter
-   </h2>
-   <p class="text-lg mb-8">
-    Stay up to date with the latest news, updates, and special offers from the
-    world of <span class="font-black">nawi</span>. Sign up for our newsletter
-    today!
-   </p>
-   <form
-    action="https://your-mailchimp-url-here"
-    method="post"
-    id="mc-embedded-subscribe-form"
-    name="mc-embedded-subscribe-form"
-    class="validate"
-    target="_blank"
-    novalidate
-   >
-    <div class="flex flex-wrap justify-center items-center">
-     <input
-      type="email"
-      value=""
-      name="EMAIL"
-      class="required email w-64 md:w-80 px-4 py-2 mb-4 md:mb-0"
-      id="mce-EMAIL"
-      placeholder="Enter your email address"
-      required
-     />
-     <div style="position: absolute; left: -5000px" aria-hidden="true">
-      <input
-       type="text"
-       name="b_1234567890abcdef12345678_1234567890"
-       tabindex="-1"
-       value=""
-      />
-     </div>
-     <input
-      type="submit"
-      value="Subscribe"
-      name="subscribe"
-      id="mc-embedded-subscribe"
-      class="button ml-4 px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded"
-     />
-    </div>
-   </form>
   </div>
  </section>
 
