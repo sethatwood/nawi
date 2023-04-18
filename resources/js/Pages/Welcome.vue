@@ -121,8 +121,11 @@ defineProps({
     <img
      src="/images/nawi-logo-vert.png"
      alt="Nawi Logo"
-     class="w-[300px] h-auto mx-auto mb-6 shadow-md"
+     class="w-[300px] h-auto mx-auto mb-2 shadow-md"
     />
+    <h2 class="font-bold text-3xl mb-4 text-white">
+     Elemental Battles, Endless Strategies 🔥🌊🌍🌪️
+    </h2>
     <h1 class="font-bold text-5xl mb-6 shadow-lg">
      Welcome to the World of nawi! 🌈🤖
     </h1>
