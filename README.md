@@ -14,8 +14,8 @@ So come, join me in the world of **_nawi_**, and experience the power of the ele
 
 ## Rules 📜
 
-1. Grab a friend and choose a board size: 6x6, 8x8, or 12x12.
-2. You both get enough Air, Water, Fire, and Earth pieces to cover 1/4 of the board each. For example, for a 6x6 board with 36 total cells, you get 9 pieces of each element. 🌪️ 🌊 🔥 🌍
+1. Grab your nawi board and a friend.
+2. You both get enough Air, Water, Fire, and Earth pieces to cover 1/4 of your board size board each. For example, if you choose to play on a 6x6 board with 36 total cells, you get 9 pieces of each element. 🌪️ 🌊 🔥 🌍
 3. Take turns placing a piece on any empty cell. Black goes first. ⚫️
 4. Elements replace others like this:
    - Air scatters Water

@@ -1,11 +1,11 @@
 <template>
  <h2 class="text-2xl font-bold mb-4">Rules 📜</h2>
  <ol class="list-decimal list-inside text-lg mb-4">
-  <li>Grab a friend and choose a board size: 6x6, 8x8, or 12x12.</li>
+  <li>Grab your nawi board and a friend.</li>
   <li>
-   You both get enough Air, Water, Fire, and Earth pieces to cover 1/4 of the
-   board each. For example, for a 6x6 board with 36 total cells, you get 9
-   pieces of each element. 🌪️ 🌊 🔥 🌍
+   You both get enough Air, Water, Fire, and Earth pieces to cover 1/4 of your
+   board size board each. For example, if you choose to play on a 6x6 board with
+   36 total cells, you get 9 pieces of each element. 🌪️ 🌊 🔥 🌍
   </li>
   <li>Take turns placing a piece on any empty cell. Black goes first. ⚫️</li>
   <li>
