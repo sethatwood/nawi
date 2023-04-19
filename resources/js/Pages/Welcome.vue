@@ -124,7 +124,7 @@ defineProps({
      class="w-[300px] h-auto mx-auto mb-2 shadow-md"
     />
     <h2 class="font-bold text-3xl mb-4 text-white">
-     Elemental Battles, Endless Strategies 🔥🌊🌍🌪️
+     <em>Elemental Battles. Endless Strategies.</em> 🔥🌊🌍🌪️
     </h2>
     <h1 class="font-bold text-5xl mb-6 shadow-lg">
      Welcome to the World of nawi! 🌈🤖
@@ -273,20 +273,20 @@ defineProps({
      target="_blank"
      class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
     >
-     💸 Order "nawi beta test edition" for $15.99 at cost from
+     💸 Order "nawi beta test edition" for $14.99 at cost from
      TheGameCrafter.com 💸
     </a>
-    <p class="text-lg mt-4">Feeling generous? 😇💖</p>
     <p class="text-lg mt-4">
-     Grab the
+     Feeling generous? 😇💖 Grab the
      <a
       href="https://www.thegamecrafter.com/games/nawi-deluxe-edition"
       target="_blank"
       class="text-blue-600 underline"
       ><strong>nawi</strong> deluxe edition</a
      >
-     🌟👑 and contribute directly to server, development, and community-building
-     costs, like sponsoring nawi sets for schools and clubs! 🏫🚀🌟
+     🌟👑 to make a direct contribution to server, development, and
+     community-building costs, like attending board game conventions and
+     sponsoring <strong>nawi</strong> sets for schools and clubs! 🏫🚀🌟
     </p>
     <p class="text-lg mt-4">
      Or, choose the more affordable
@@ -319,6 +319,14 @@ defineProps({
     >
      📝 Share Your Feedback 📝
     </a>
+    <p class="text-lg mt-6">
+     🌟 Surprise! 🌟 Each game set comes with a few "extra" pieces featuring a
+     mysterious icon containing all 4 elements. 🔥💧🌍💨
+    </p>
+    <p class="text-lg mt-4">
+     Unleash your creativity 🎨 and let us know what ingenious ideas 💡 you came
+     up with for how to use these enigmatic pieces in the game! 🧩🤔
+    </p>
    </div>
   </div>
  </section>
