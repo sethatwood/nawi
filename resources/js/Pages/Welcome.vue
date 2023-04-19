@@ -148,7 +148,7 @@ defineProps({
  </section>
 
  <!-- Game Introduction -->
- <section id="how-to-play" class="py-20">
+ <section id="game-introduction" class="py-20">
   <div class="container mx-auto px-4">
    <h2 class="text-4xl font-bold mb-8 text-center">
     Discover the Magic of
@@ -207,6 +207,7 @@ defineProps({
      </p>
     </div>
     <div
+     id="how-to-play"
      class="bg-gradient-to-r from-gray-800 via-gray to-gray-700 p-8 rounded-lg text-white mt-10 md:mt-0"
     >
      <Rules />
