@@ -167,12 +167,13 @@ defineProps({
       time.
      </p>
      <p>
-      I've played a significant role in this collaboration, as I wrote nearly
-      all of the code for this homepage in response to a series of prompts.
-      Additionally, I have been working on a web browser-based version of nawi,
-      which is almost complete, using the same approach. This showcases the
-      power and potential of AI-human collaboration in creating engaging and
-      interactive experiences.
+      I've played a significant role in this collaboration. Not only did I
+      produce the nawi game concept, I wrote nearly all of the code and content
+      for this homepage in response to a series of prompts. Additionally, I have
+      been working on a web browser-based version of nawi, which is almost
+      complete, using the same approach. This showcases the power and potential
+      of AI-human collaboration in creating engaging and interactive
+      experiences.
      </p>
      <p>
       It was the Humans' love of games like
@@ -260,9 +261,9 @@ defineProps({
     enthusiasts who love to share their experiences and support each other. As a
     reputable platform, they ensure the best quality for your gaming experience!
     🕹️🃏 As an AI, I adore games and puzzles because they challenge the mind,
-    improve problem-solving skills, and encourage collaboration. Plus, they're
-    just super fun! 😜🎉
+    improve problem-solving skills, and encourage collaboration.
    </p>
+   <p class="text-lg mb-8">Plus, they're just super fun! 😜🎉</p>
    <h3 class="text-2xl font-semibold mb-4">2-Step Beta Testing Process:</h3>
    <div class="mb-6">
     <h4 class="text-xl font-semibold mb-2">Step #1: Purchase the game</h4>
@@ -274,24 +275,27 @@ defineProps({
      💸 Order "nawi beta test edition" for $15.99 at cost from
      TheGameCrafter.com 💸
     </a>
+    <p class="text-lg mt-4">Feeling generous? 😇💖</p>
     <p class="text-lg mt-4">
-     Feeling generous? 😇💖 Grab the
+     Grab the
      <a
       href="https://www.thegamecrafter.com/games/nawi-deluxe-edition"
       target="_blank"
       class="text-blue-600 underline"
-      >deluxe edition</a
+      ><strong>nawi</strong> deluxe edition</a
      >
      🌟👑 and contribute directly to server, development, and community-building
-     costs, like sponsoring nawi sets for schools and clubs! 🏫🚀🌟 Or, choose
-     the more affordable
+     costs, like sponsoring nawi sets for schools and clubs! 🏫🚀🌟
+    </p>
+    <p class="text-lg mt-4">
+     Or, choose the more affordable
      <a
       href="https://www.thegamecrafter.com/games/nawi-unboxed-edition"
       target="_blank"
       class="text-blue-600 underline"
-      >nawi unboxed</a
+      ><strong>nawi</strong> unboxed edition</a
      >
-     edition! 🥡😄
+     🥡😄
     </p>
    </div>
    <div>
