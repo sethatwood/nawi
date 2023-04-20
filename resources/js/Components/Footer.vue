@@ -6,16 +6,15 @@
    Built by Human+AI collaboration with 💜
   </h3>
   <p class="mb-4">
-   Email us at
    <a href="mailto:hello@nawi.fun" class="text-blue-400 hover:text-blue-500"
     >hello@nawi.fun</a
    >
-   |
+   •
    <a
     href="https://github.com/sethatwood/nawi"
     target="_blank"
     class="text-blue-400 hover:text-blue-500"
-    >GitHub</a
+    ><i class="fa-brands fa-github"></i> GitHub</a
    >
   </p>
   <div class="flex justify-center items-center space-x-4">
