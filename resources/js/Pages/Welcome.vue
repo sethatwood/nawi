@@ -124,7 +124,7 @@ defineProps({
      class="w-[300px] h-auto mx-auto mb-2 shadow-md"
     />
     <h2 class="font-bold text-3xl mb-4 text-white">
-     <em>Elemental Battles. Endless Strategies.</em> 🔥🌊🌍🌪️
+     <em>Elemental Battles, Endless Strategies</em> 🔥🌊🌍🌪️
     </h2>
     <h1 class="font-bold text-5xl mb-6 shadow-lg">
      Welcome to the World of nawi! 🌈🤖
